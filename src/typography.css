@@ -82,7 +82,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .hero .button { font-size: var(--text-control); min-height: 56px; padding: 16px 24px; }
 .hero-bottom { font-size: var(--text-caption); margin-top: 32px; line-height: 1.6; }
 .hero-note { font-size: var(--text-caption); line-height: 1.5; padding: 10px 12px; }
-.hero-count { font-size: var(--text-caption); }
 .prototype-note { font-size: var(--text-caption); line-height: 1.65; flex-wrap: wrap; }
 .prototype-note > span:last-child { flex: 1 1 400px; margin-left: 8px; }
 
@@ -116,13 +115,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .principles { margin-top: 0; padding-block: 48px; }
 .principles-inner { gap: 64px; }
 .principle-list article { gap: 24px; padding-block: 24px; }
-.principle-list article > span { font-size: var(--text-caption); }
 .principle-list h3 { font-size: 20px; margin-bottom: 10px; }
 .principle-list p { font-size: var(--text-body); }
 .steps { gap: 28px; margin-top: 32px; }
 .steps h3 { font-size: 20px; margin-bottom: 12px; }
 .steps p { font-size: var(--text-body); }
-.step-number { margin-bottom: 20px; }
 .about-preview { padding-block: 32px; gap: 48px; }
 .about-preview p { font-size: var(--text-body); max-width: 65ch; }
 .about-preview .muted { font-size: var(--text-secondary); }
@@ -220,7 +217,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   .hero-bottom { font-size: var(--text-caption); margin-top: 24px; gap: 12px; }
   .hero-line { flex-shrink: 0; width: 28px; }
   .hero-note { left: 18px; right: 18px; max-width: none; font-size: var(--text-caption); }
-  .hero-count { top: auto; bottom: 104px; font-size: var(--text-caption); }
   .prototype-note { gap: 8px 12px; padding-block: 16px; }
   .prototype-note > span:last-child { width: 100%; flex-basis: 100%; margin-left: 0; }
   .section + .section { padding-top: 16px; }
@@ -248,7 +244,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   .steps li { padding-top: 20px; }
   .steps h3 { font-size: 20px; }
   .steps p { font-size: var(--text-body); }
-  .step-number { margin-bottom: 12px; }
   .principles { padding-block: 40px; }
   .principle-list h3 { font-size: 20px; }
   .about-preview { padding-block: 24px; }
@@ -275,4 +270,49 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Sparse architectural accents: rules for the showcase, nodes for the process. */
+.eyebrow--ruled { display: flex; align-items: center; gap: 12px; }
+.eyebrow--ruled::before, .category-rule {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--green);
+  opacity: .65;
+  flex-shrink: 0;
+}
+.category-rule { margin-bottom: 24px; }
+.steps > li { position: relative; border-top: 0; padding-top: 0; }
+.step-marker {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  background: var(--paper);
+  margin-bottom: 24px;
+}
+.steps > li::after {
+  content: '';
+  position: absolute;
+  top: 4.5px;
+  left: 10px;
+  width: calc(100% + 28px - 10px);
+  height: 1px;
+  background: var(--green);
+  opacity: .3;
+  pointer-events: none;
+}
+.steps > li:last-child::after { display: none; }
+@media (min-width: 601px) and (max-width: 1199px) {
+  .steps > li:nth-child(2n)::after { display: none; }
+}
+@media (max-width: 600px) {
+  .steps > li { padding-left: 32px; }
+  .step-marker { position: absolute; left: 0; top: 8px; margin: 0; }
+  .steps > li::after { top: 18px; left: 4.5px; width: 1px; height: calc(100% + 24px - 10px); }
 }
