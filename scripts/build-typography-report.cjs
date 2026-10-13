@@ -1,0 +1,31 @@
+// Assemble local screenshots into one self-contained review document.
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '../qa-output/typography');
+const img = (phase, name) => 'data:image/png;base64,' + fs.readFileSync(path.join(root, phase, name)).toString('base64');
+const sections = [['home', 'Главная'], ['catalog', 'Каталог кухонь'], ['model', 'Карточка модели'], ['dialog', 'Окно консультации']];
+function pair(name, width, title) {
+  return `<section id="${name}-${width}"><h2>${title} · ${width} px</h2><div class="pair">${['before','after'].map(phase => `<figure><figcaption>${phase === 'before' ? 'До' : 'После'}</figcaption><div class="screen"><img src="${img(phase, `${name}-${width}.png`)}" alt="${title}, ${phase === 'before' ? 'до' : 'после'}, ${width} px" width="${width}"></div></figure>`).join('')}</div></section>`;
+}
+const sizes = [
+  ['Основной текст', '12–15 px', '16–18 px'],
+  ['Меню и кнопки', '11–13 px', '15–16 px'],
+  ['Описания карточек', '10–12 px', '15–16 px'],
+  ['Характеристики', '12 px', '15–16 px'],
+  ['Полезные подписи', '8–12 px', '13 px и больше'],
+];
+const html = `<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WALENZA — типографика: до / после</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;padding:32px;background:#faf9f6;color:#292b26;font:16px/1.6 Arial,sans-serif}main{max-width:1600px;margin:auto}h1,h2{font-family:Georgia,serif;font-weight:400;line-height:1.2}h1{font-size:40px;margin:16px 0}h2{font-size:30px;margin:0 0 24px}p{max-width:85ch}a{color:#39483b;text-underline-offset:4px}nav{display:flex;flex-wrap:wrap;gap:12px 24px;margin:28px 0}nav a{padding:8px 0}section{padding:32px 0;border-top:1px solid #dddcd4;margin-top:24px}.notice{padding:20px 24px;background:#eaece4}.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}figure{margin:0;min-width:0}figcaption{font-size:18px;font-weight:bold;margin-bottom:12px}.screen{max-height:840px;overflow:auto;border:1px solid #dddcd4;background:#eaece4}.screen img{display:block;max-width:100%;height:auto}.mobile .pair{grid-template-columns:repeat(2,minmax(0,390px));justify-content:center}.mobile .screen{max-height:900px}table{border-collapse:collapse;width:100%;max-width:900px;margin:24px 0}th,td{padding:12px 20px;text-align:left;border-bottom:1px solid #dddcd4}th{background:#eaece4}label{display:block;padding:16px 0}input{width:20px;height:20px;vertical-align:middle;margin-right:10px}main:has(#actual:checked) .comparisons .screen img{max-width:none}details{padding:16px 0}summary{cursor:pointer;padding:12px 0}ul{padding-left:24px}li{margin:8px 0}:focus-visible{outline:3px solid #716247;outline-offset:4px}@media(max-width:700px){body{padding:20px}h1{font-size:32px}.pair,.mobile .pair{grid-template-columns:1fr}.screen{max-height:720px}td,th{padding:10px;font-size:14px}}
+</style><main><p>WALENZA · Локальное согласование · 13 октября 2026</p><h1>Типографика, читаемость и композиция</h1><div class="notice"><strong>Снимки локальной проверки до публикации.</strong> Архитектура, маршруты, порядок секций, содержание, фильтры, палитра, демонстрационные изображения и сценарии сохранены.</div><p>Слева — исходная версия, справа — локальная обновлённая сборка. Снимки сделаны при одинаковых ширинах и без ручного изменения текста. Длинные страницы прокручиваются внутри рамок.</p>
+<table><thead><tr><th>Текст</th><th>До</th><th>После</th></tr></thead><tbody>${sizes.map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('')}</tbody></table>
+<p>Вторичный текст укрупнён; кнопка «Обсудить проект» в шапке выделена существующим зелёным цветом. Сокращены суммарные паузы между соседними секциями. На планшетах читаемость обеспечивают раскрываемое меню и две колонки карточек; изображения не уменьшены ради текста.</p>
+<nav>${sections.map(([name,title]) => `<a href="#${name}-1440">${title}</a>`).join('')}<a href="#mobile">Мобильные экраны</a><a href="#menu-390">Мобильное меню</a><a href="#checks">Проверки</a></nav>
+<label><input type="checkbox" id="actual">Показывать снимки в натуральном размере (доступна прокрутка рамок)</label><div class="comparisons">
+${sections.map(([name,title]) => pair(name,1440,title)).join('')}
+<div class="mobile" id="mobile">${sections.map(([name,title]) => pair(name,390,title)).join('')}${pair('menu',390,'Мобильное меню')}</div>
+<section><h2>Главная целиком</h2><details><summary>Развернуть сравнение вертикального ритма · 1440 px</summary>${pair('home-full',1440,'Главная целиком')}</details></section>
+<section id="checks"><h2>Что проверено</h2><ul><li>Ширины 360, 390, 768, 1024 и 1440 px: страницы, общие компоненты, подписи, меню, кнопки, характеристики и диалог.</li><li>Нет горизонтального переполнения, обрезанных проверенных подписей и наложений в шапке, меню, фильтрах, подписях карточек, заголовках секций и характеристиках.</li><li>Сценарии: 22 маршрута, 15 внутренних переходов, фильтр категорий и история, карточки, прямые ссылки и обновление, FAQ, якоря, окно консультации и мобильное меню.</li><li>Клавиатура: видимый фокус, открытие и закрытие диалога, Escape, цикл Tab и доступность нижней кнопки через прокрутку.</li><li>200% проверено эмуляцией браузерного масштаба: CSS-viewport уменьшен вдвое, pixel ratio увеличен до 2 для физических ширин 768, 1024 и 1440 px. Это проверяет адаптивную перестройку и увеличенное отображение; ручной масштаб через меню браузера не использовался.</li><li>Сборка TypeScript/Vite успешна. Ошибок JavaScript, действующих форм и внешних интеграций нет.</li></ul><details><summary>Масштаб 200%: каталог и прокручиваемый диалог</summary><div class="pair"><div class="screen"><img src="${img('after','catalog-zoom-200.png')}" alt="Каталог при эмуляции масштаба 200%"></div><div class="screen"><img src="${img('after','dialog-zoom-200.png')}" alt="Прокручиваемый диалог при эмуляции масштаба 200%, нижняя кнопка доступна"></div></div></details></section>
+</div><p>Сравнение — отдельный локальный документ. Оно не добавляет функций в сайт. Статус текущей публикации доступен в GitHub Actions.</p></main></html>`;
+fs.writeFileSync(path.join(root, 'comparison.html'), html);
+console.log(path.join(root, 'comparison.html'));
