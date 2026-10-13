@@ -1,0 +1,2 @@
+// Public assets must stay inside the repository path on GitHub Pages.
+export const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
