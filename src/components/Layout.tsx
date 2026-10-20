@@ -1,32 +1,48 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { navigation } from '../data/content';
+import { contacts, navigation, primaryNavigation, type ContactIntent, type OpenContact } from '../data/content';
 import { Arrow } from './UI';
-
-export function Header({ onContact }: { onContact: () => void }) {
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
-  const toggleRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => { setOpen(false); }, [location.pathname, location.search]);
-  return <><a className="skip-link" href="#main" onClick={event => { event.preventDefault(); const main = document.getElementById('main'); main?.focus(); main?.scrollIntoView(); }}>К содержимому</a><header className="site-header"><div className="header-top container"><Link className="logo" to="/" aria-label="WALENZA — главная">WALENZA<span>мебель, которая становится домом</span></Link><p className="header-region">Мебель на заказ<br /><span>Москва и Московская область</span></p><div className="header-contact"><span>Контакты уточняются</span><button onClick={onContact}>Телефон · MAX · Telegram <Arrow /></button></div><button className="menu-toggle" ref={toggleRef} aria-label={open ? 'Закрыть меню' : 'Открыть меню'} aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}>{open ? '✕' : '☰'}</button></div><nav id="main-navigation" className={`main-nav ${open ? 'is-open' : ''}`} aria-label="Основная навигация" onKeyDown={event => { if (event.key === 'Escape') { setOpen(false); toggleRef.current?.focus(); } }}><div className="container nav-inner">{navigation.map(item => <NavLink key={item.path} to={item.path} end={item.path === '/'}>{item.label}</NavLink>)}<button onClick={onContact}>Обсудить проект <Arrow /></button></div></nav></header></>;
+export function Header({ onContact }: { onContact: OpenContact }) {
+ const [open, setOpen] = useState(false);
+ const location = useLocation(); const toggleRef = useRef<HTMLButtonElement>(null);
+ useEffect(() => { setOpen(false); }, [location.pathname, location.search, location.hash]);
+ return <><a className="skip-link" href="#main" onClick={event => { event.preventDefault(); document.getElementById('main')?.focus(); document.getElementById('main')?.scrollIntoView(); }}>К содержимому</a>
+ <header className="site-header"><div className="header-top container">
+  <Link className="logo" to="/" aria-label="WALENZA — главная">WALENZA<span>мебель, которая становится домом</span></Link>
+  <div className="header-address"><p>{contacts.address}</p><span>Часы работы: {contacts.hours}</span></div>
+  <div className="header-phones"><a className="primary-phone" href={contacts.phoneHref}>{contacts.phone}</a><a href={contacts.extraPhoneHref}>{contacts.extraPhone}</a></div>
+  <div className="header-actions"><button className="button" onClick={() => onContact()}>Оставить заявку <Arrow /></button><button className="director-link" onClick={() => onContact({ kind: 'director' })}>Написать директору <Arrow /></button></div>
+  <button className="menu-toggle" ref={toggleRef} aria-label={open ? 'Закрыть меню' : 'Открыть меню'} aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}>{open ? '✕' : '☰'}</button>
+ </div><nav id="main-navigation" className={`main-nav ${open ? 'is-open' : ''}`} aria-label="Основная навигация" onKeyDown={event => { if (event.key === 'Escape') { setOpen(false); toggleRef.current?.focus(); } }}><div className="container nav-inner">{primaryNavigation.map(item => <NavLink key={item.path} to={item.path}>{item.label}</NavLink>)}<div className="mobile-secondary-nav"><Link to="/about">О салоне</Link><Link to="/promotions">Акции</Link></div></div></nav></header></>;
 }
-export function Footer() { return <footer className="site-footer container"><div className="footer-main"><div><Link className="logo" to="/">WALENZA</Link><p>Кухни. Шкафы. Ваше пространство.</p></div><div className="footer-links">{navigation.slice(1).map(item => <Link key={item.path} to={item.path}>{item.label}</Link>)}</div><div><p>Москва и Московская область</p><Link className="text-link" to="/contacts">Способы связи <Arrow /></Link><p className="muted">Данные ожидают подтверждения</p></div></div><div className="footer-bottom"><span>WALENZA · Архитектурный прототип</span><span>Все иллюстрации, модели, проекты, отзывы и акции — демонстрационные.</span></div></footer>; }
+export function Footer() {
+ return <footer className="site-footer container"><div className="footer-main"><div><Link className="logo" to="/">WALENZA</Link><p>Кухни, шкафы и мебель по индивидуальному заказу.</p><p className="muted">Рабочее название и палитра на согласовании.</p></div><div className="footer-links">{navigation.filter(item => item.path !== '/').map(item => <Link key={item.path} to={item.path}>{item.label}</Link>)}</div><div><a className="text-link" href={contacts.phoneHref}>{contacts.phone}</a><p>{contacts.address}</p><p>{contacts.hours}</p><Link to="/contacts" className="text-link">Способы связи <Arrow /></Link></div></div><div className="footer-bottom"><span>WALENZA · Архитектурный прототип</span><span>Названия кухонь, иллюстрации, проекты, отзывы и акции — демонстрационные. Ассортимент требует подтверждения.</span></div></footer>;
+}
 export function ScrollAndTitle() {
-  const { pathname, search, hash } = useLocation();
-  useEffect(() => {
-    const anchor = hash ? document.getElementById(hash.slice(1)) : null;
-    if (anchor) anchor.scrollIntoView();
-    else window.scrollTo({ top: 0, behavior: 'instant' });
-    const section = navigation.find(item => item.path !== '/' && pathname.startsWith(item.path));
-    document.title = `${section?.label || (pathname === '/' ? 'Мебель для вашей жизни' : 'Страница не найдена')} — WALENZA`;
-    const focusTarget = anchor || document.getElementById('main');
-    if (anchor) anchor.setAttribute('tabindex', '-1');
-    focusTarget?.focus({ preventScroll: true });
-  }, [pathname, search, hash]);
-  return null;
+ const { pathname, search, hash } = useLocation();
+ const previousPath = useRef<string | null>(null);
+ useEffect(() => {
+  const anchor = hash ? document.getElementById(hash.slice(1)) : null;
+  if (anchor) { if (anchor instanceof HTMLDetailsElement) anchor.open = true; anchor.scrollIntoView(); }
+  else if (previousPath.current !== pathname) window.scrollTo({ top: 0, behavior: 'instant' });
+  const section = navigation.find(item => item.path !== '/' && pathname.startsWith(item.path));
+  document.title = `${section?.label || (pathname === '/' ? 'Мебель для вашей жизни' : 'Страница не найдена')} — WALENZA`;
+  const target = anchor || (previousPath.current !== pathname ? document.getElementById('main') : null); if (anchor) anchor.setAttribute('tabindex', '-1'); target?.focus({ preventScroll: true });
+  previousPath.current = pathname;
+ }, [pathname, search, hash]);
+ return null;
 }
-export function ContactDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => { if (open && !ref.current?.open) ref.current?.showModal(); else if (!open && ref.current?.open) ref.current.close(); }, [open]);
-  return <dialog ref={ref} className="contact-dialog" onCancel={onClose} onClose={onClose} onClick={event => { if (event.target === event.currentTarget) onClose(); }}><div className="dialog-body"><button className="dialog-close" aria-label="Закрыть окно" onClick={onClose}>✕</button><p className="eyebrow">WALENZA · Прототип</p><h2>Обсудим ваше пространство</h2><p>Здесь будут доступны телефон, MAX и Telegram. Подтверждённые реквизиты пока не предоставлены.</p><div className="contact-methods">{['Телефон', 'MAX', 'Telegram'].map(method => <div key={method}><strong>{method}</strong><span>Ожидает подтверждения</span></div>)}</div><p className="muted">Это демонстрационное окно: данные не собираются, сообщения не отправляются. Telegram AI-консультант предусмотрен для будущего этапа.</p><button className="button" onClick={onClose}>Понятно <Arrow /></button></div></dialog>;
+const dialogCopy = {
+ request: { title: 'Оставить заявку', text: 'Это предварительный просмотр сценария заявки. Поля ввода и отправка пока не подключены. Сейчас можно позвонить в салон.' },
+ director: { title: 'Написать директору', text: 'Это прямое обращение к Анне, а не к AI-помощнику. Контакт Анны пока не предоставлен и требует подтверждения. Сообщение из прототипа не отправляется.' },
+ max: { title: 'MAX — связь с салоном', text: 'Прямая ссылка салона в MAX пока не предоставлена. Это демонстрация будущего перехода, приложение мессенджера не открывается.' },
+ telegram: { title: 'Telegram — связь с салоном', text: 'Прямая ссылка салона в Telegram пока не предоставлена. Этот канал предназначен для связи с сотрудником; это не AI-помощник.' },
+ ai: { title: 'AI-помощник в Telegram', text: 'Будущий AI-помощник будет работать в отдельном Telegram-боте. Бот и его адрес пока не подключены. Встроенного чата на сайте нет.' },
+};
+export function ContactDialog({ intent, onClose, onContact }: { intent: ContactIntent | null; onClose: () => void; onContact: OpenContact }) {
+ const ref = useRef<HTMLDialogElement>(null); const copy = dialogCopy[intent?.kind || 'request'];
+ useEffect(() => { if (intent && !ref.current?.open) ref.current?.showModal(); else if (!intent && ref.current?.open) ref.current.close(); }, [intent]);
+ return <dialog ref={ref} className="contact-dialog" aria-labelledby="contact-dialog-title" aria-describedby="contact-dialog-description" onCancel={onClose} onClose={onClose} onClick={event => { if (event.target === event.currentTarget) onClose(); }}><div className="dialog-body"><button className="dialog-close" aria-label="Закрыть окно" onClick={onClose}>✕</button><p className="eyebrow">WALENZA · Демонстрационный сценарий</p><h2 id="contact-dialog-title">{copy.title}</h2>{intent?.context && <p className="request-context">Выбранное решение: <strong>{intent.context}</strong></p>}<p id="contact-dialog-description">{copy.text}</p>
+ {intent?.kind === 'request' && <div className="contact-methods"><a href={contacts.phoneHref}><strong>Позвонить в салон</strong><span>{contacts.phone}</span></a><button onClick={() => onContact({ kind: 'max' })}><strong>MAX <Arrow /></strong><span>Ссылка требует подтверждения</span></button><button onClick={() => onContact({ kind: 'telegram' })}><strong>Telegram <Arrow /></strong><span>Ссылка требует подтверждения</span></button></div>}
+ <p className="muted">Никакие данные не сохраняются и не отправляются.</p><button className="button" onClick={onClose}>Понятно <Arrow /></button></div></dialog>;
 }

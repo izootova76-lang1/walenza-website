@@ -1,0 +1,33 @@
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { collections, layouts, models, type OpenContact } from '../data/content';
+import { Arrow, Demo, ModelCard, PageHeading, SectionHeading } from '../components/UI';
+import { NotFound } from './Sections';
+
+export function Kitchens() {
+ const [params, setParams] = useSearchParams(); const location = useLocation();
+ const collection = collections.some(item => item.id === params.get('collection')) ? params.get('collection')! : '';
+ const legacy = params.get('category');
+ const layoutValue = params.get('layout') || (legacy !== 'island' ? legacy : '');
+ const layout = layouts.some(item => item.id === layoutValue) ? layoutValue! : '';
+ const island = ['with', 'without'].includes(params.get('island') || '') ? params.get('island')! : legacy === 'island' ? 'with' : '';
+ const shown = params.get('shown') === '12' ? 12 : 6;
+ const filtered = models.filter(model => (!collection || model.collections.includes(collection)) && (!layout || model.layout === layout) && (!island || model.island === (island === 'with')));
+ const update = (key: string, value: string) => { const next = new URLSearchParams(); if (collection) next.set('collection', collection); if (layout) next.set('layout', layout); if (island) next.set('island', island); if (value) next.set(key, value); else next.delete(key); setParams(next); };
+ const active = !!(collection || layout || island);
+ const returnTo = location.pathname + location.search;
+ return <div className="container page-content kitchen-catalog"><PageHeading eyebrow="Кухни / Каталог настроений" title="Найдите свой характер кухни" description="Начните с настроения или планировки. Это примеры для индивидуального проекта, а не фиксированные фабричные изделия. Материалы и возможность реализации обсуждаются отдельно." />
+ <div className="catalog-layout"><aside className="collection-picker" aria-label="Выбор коллекции"><p className="eyebrow">Шесть направлений</p><div className="collection-buttons"><button aria-pressed={!collection} onClick={() => update('collection', '')}>Все кухни <span>{models.length}</span></button>{collections.map(item => <button key={item.id} aria-pressed={collection === item.id} onClick={() => update('collection', item.id)}>{item.title}<span>{models.filter(model => model.collections.includes(item.id)).length}</span></button>)}</div><label className="collection-mobile">Направление<select value={collection} onChange={event => update('collection', event.target.value)}><option value="">Все кухни · {models.length}</option>{collections.map(item => <option value={item.id} key={item.id}>{item.title}</option>)}</select></label><p className="muted">Коллекции пересекаются: один пример может относиться к нескольким направлениям.</p></aside>
+ <div className="catalog-results"><div className="catalog-filters"><label>Планировка<select value={layout} onChange={event => update('layout', event.target.value)}><option value="">Любая планировка</option>{layouts.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</select></label><label>Остров<select value={island} onChange={event => update('island', event.target.value)}><option value="">Не важно</option><option value="with">С островом</option><option value="without">Без острова</option></select></label><button className="filter-reset" onClick={() => setParams({})} disabled={!active && shown === 6}>Сбросить фильтры</button></div>
+ <div className="catalog-status" role="status">Показано {Math.min(shown, filtered.length)} из {filtered.length} демонстрационных примеров{collection ? ` · ${collections.find(item => item.id === collection)?.title}` : ' · общий обзор'}</div>
+ {filtered.length ? <div className="model-grid">{filtered.slice(0, shown).map(model => <ModelCard key={model.id} model={model} returnTo={returnTo} />)}</div> : <div className="empty-results"><h2>Такого сочетания пока нет</h2><p>В демонстрационной подборке нет примеров с выбранными признаками. Это не означает, что салон не сможет обсудить вашу задачу.</p><button className="button" onClick={() => setParams({})}>Показать все кухни <Arrow /></button></div>}
+ {filtered.length > shown && <button className="button show-more" onClick={() => { const next = new URLSearchParams(params); next.set('shown', '12'); setParams(next); }}>Показать ещё {filtered.length - shown} <Arrow /></button>}
+ </div></div><aside className="info-note">Все 12 названий, визуалов и признаков — демонстрационные. Показанная планировка не гарантирует доступность других вариантов. Фабрики, технические характеристики и цены не заявлены.</aside></div>;
+}
+
+export function ModelDetail({ onContact }: { onContact: OpenContact }) {
+ const { id } = useParams(); const [params] = useSearchParams(); const model = models.find(item => item.id === id);
+ if (!model) return <NotFound />;
+ const candidate = params.get('return') || '/kitchens';
+ const returnTo = /^\/kitchens(?:\?[^#]*)?$/.test(candidate) ? candidate : '/kitchens';
+ return <div className="container page-content"><div className="breadcrumbs"><Link to={returnTo}>Кухни</Link><span>/</span><span>{model.title}</span></div><div className="detail-layout"><div className="detail-image"><img src={model.image} alt={`Демонстрационный визуал кухни «${model.title}»`} /><Demo /></div><div className="detail-copy"><p className="eyebrow">Демонстрационный пример для индивидуального проекта</p><h1>{model.title}</h1><p className="lead">{model.subtitle}</p><p>Этот образ помогает обсудить ваши пожелания. Он не является фиксированным фабричным изделием или подтверждённым проектом WALENZA.</p><dl className="specs"><div><dt>Показанная планировка</dt><dd>{layouts.find(item => item.id === model.layout)?.title}</dd></div><div><dt>Остров на иллюстрации</dt><dd>{model.island ? 'Предусмотрен' : 'Не предусмотрен'}</dd></div><div><dt>Направления</dt><dd>{collections.filter(item => model.collections.includes(item.id)).map(item => item.title).join(' · ')}</dd></div><div><dt>Материалы, размеры, производство</dt><dd>Требуют согласования</dd></div><div><dt>Стоимость</dt><dd>Индивидуальный расчёт после обсуждения</dd></div></dl><button className="button" onClick={() => onContact({ kind: 'request', context: `Кухня «${model.title}»` })}>Хочу похожую кухню <Arrow /></button><Link className="text-link catalog-back" to={returnTo}>Вернуться к выбранным кухням <Arrow /></Link></div></div><section className="section"><SectionHeading eyebrow="Продолжить знакомство" title="Другие идеи для вашей кухни" /><div className="model-grid">{models.filter(item => item.id !== id).slice(0, 3).map(item => <ModelCard key={item.id} model={item} returnTo={returnTo} />)}</div></section></div>;
+}
