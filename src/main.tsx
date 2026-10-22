@@ -5,5 +5,7 @@ import App from './App';
 import './styles.css';
 import './typography.css';
 import './prototype.css';
+import './editorial.css';
+import './design-system.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><HashRouter><App /></HashRouter></React.StrictMode>);

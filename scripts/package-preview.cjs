@@ -8,9 +8,9 @@ function collect(directory) {
  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
   const full = path.join(directory, entry.name);
   if (entry.isDirectory()) collect(full);
-  else if (/\.(svg|jpg|png|webp)$/.test(entry.name)) {
+  else if (/\.(svg|jpg|png|webp|mp4)$/.test(entry.name)) {
    const key = path.relative(path.join(root, 'public'), full).split(path.sep).join('/');
-   const mime = entry.name.endsWith('.svg') ? 'image/svg+xml' : entry.name.endsWith('.jpg') ? 'image/jpeg' : entry.name.endsWith('.webp') ? 'image/webp' : 'image/png';
+   const mime = entry.name.endsWith('.mp4') ? 'video/mp4' : entry.name.endsWith('.svg') ? 'image/svg+xml' : entry.name.endsWith('.jpg') ? 'image/jpeg' : entry.name.endsWith('.webp') ? 'image/webp' : 'image/png';
    assets[key] = `data:${mime};base64,${fs.readFileSync(full).toString('base64')}`;
   }
  }
@@ -24,5 +24,5 @@ html = html.replace(/<script[^>]+src="([^"]+)"[^>]*><\/script>/g, (_, src) => `<
 const output = path.join(root, 'review');
 fs.mkdirSync(output, { recursive: true });
 fs.writeFileSync(path.join(output, 'WALENZA-preview.html'), html);
-fs.writeFileSync(path.join(output, 'КАК ОТКРЫТЬ.txt'), 'WALENZA — предварительная версия от 20 октября 2026 года.\n\nОткройте WALENZA-preview.html в современном браузере (Edge, Chrome, Firefox или Safari). Сервер и интернет для просмотра изображений не нужны. Можно переслать один HTML-файл.\n\nКухни, материалы, проекты, отзывы и акции демонстрационные. Телефоны и адрес получены из задания. Заявки не отправляются, AI и мессенджеры не подключены. Сайт не опубликован.\n');
+fs.writeFileSync(path.join(output, 'КАК ОТКРЫТЬ.txt'), 'WALENZA — предварительная версия от 22 октября 2026 года.\n\nОткройте WALENZA-preview.html в современном браузере (Edge, Chrome, Firefox или Safari). Сервер и интернет для просмотра изображений не нужны. Можно переслать один HTML-файл: фотографии и сокращённое видео включены внутрь.\n\nФотографии мебели и руководителей, отзывы и видео предоставлены заказчиком. Визуалы образцов материалов и макеты акций демонстрационные. Новые сведения на согласовании. Перечень материалов и производителей предоставлен заказчиком. Телефоны и адрес получены из задания. Заявки не отправляются, AI и мессенджеры не подключены. Сайт не опубликован.\n');
 console.log(`Standalone review: ${path.join(output, 'WALENZA-preview.html')} (${Math.round(Buffer.byteLength(html) / 1024)} KB)`);

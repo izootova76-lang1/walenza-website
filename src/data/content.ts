@@ -1,9 +1,15 @@
 import { assetUrl } from '../assetUrl';
 export type Layout = 'straight' | 'corner' | 'u';
-export type Model = { id: string; title: string; layout: Layout; island: boolean; collections: string[]; subtitle: string; image: string; demo: boolean };
-export type Project = { id: string; title: string; description: string; image: string; demo: boolean };
+export type Manufacturer = { id: string; name: string };
+export type CatalogGroup = { id: string; title: string };
+// Каталожная принадлежность не является утверждением о фабрике-изготовителе.
+export const manufacturers: Manufacturer[] = [];
+export const catalogGroups: CatalogGroup[] = [{ id: 'walenza', title: 'WALENZA' }];
+export const primaryCatalogGroupId = 'walenza';
+export type Model = { id: string; catalogGroupId: string; manufacturerId: string | null; title: string; workingTitle?: boolean; sourceLabel?: string; imageCaption?: string; layout: Layout; island: boolean | null; collections: string[]; subtitle: string; image: string; demo: boolean; facades: string; colors: string; hardware: string; customization: string; additionalImages?: { image: string; alt: string }[] };
+export type Project = { id: string; title: string; description: string; image: string; demo: boolean; furnitureType?: string; additionalImages?: { image: string; alt: string }[]; features?: string[]; reviewId?: string; videoReview?: { src: string; poster: string; title: string } };
 export type Promotion = { id: string; title: string; description: string; demo: boolean };
-export type ContactIntent = { kind: 'request' | 'director' | 'max' | 'telegram' | 'ai'; context?: string };
+export type ContactIntent = { kind: 'request' | 'visit' | 'director' | 'max' | 'telegram' | 'ai'; context?: string };
 export type OpenContact = (intent?: ContactIntent) => void;
 export const navigation = [
  { path: '/', label: 'Главная' }, { path: '/kitchens', label: 'Кухни' }, { path: '/furniture', label: 'Шкафы и мебель' },
@@ -17,52 +23,83 @@ export const collections = [
  { id: 'art-deco', title: 'Кухни в стиле арт-деко' }, { id: 'classic', title: 'Кухни в классическом стиле' },
 ];
 export const layouts: { id: Layout; title: string }[] = [{ id: 'straight', title: 'Прямая' }, { id: 'corner', title: 'Угловая' }, { id: 'u', title: 'П-образная' }];
-const model = (id: string, title: string, layout: Layout, island: boolean, groups: string[], subtitle: string): Model => ({ id, title, layout, island, collections: groups, subtitle, image: assetUrl(`/images/kitchens/${id}.svg`), demo: true });
+const model = (id: string, title: string, layout: Layout, island: boolean | null, groups: string[], subtitle: string, facades: string, colors = 'Палитры RAL, CS, NCS — по описанию салона'): Model => ({ id, catalogGroupId: primaryCatalogGroupId, manufacturerId: null, title, layout, island, collections: groups, subtitle, image: assetUrl(`/images/kitchens/${id}.jpg`), demo: false, facades, colors, hardware: 'Blum или Boyard — на выбор', customization: 'По описанию салона: сочетание с другими фасадами, выбор материала столешницы и нестандартные размеры. Итоговая комплектация согласуется индивидуально.' });
+// У новых фотографий нет технических описаний: не наследуем сведения других кухонь.
+const photographedModel = (id: string, title: string, layout: Layout, groups: string[], subtitle: string, additional: string[] = []): Model => ({
+ ...model(id, title, layout, false, groups, subtitle, 'Материал и отделка фасадов уточняются', 'Доступные цвета и декоры уточняются'),
+ workingTitle: true, sourceLabel: 'Изображение предоставлено заказчиком', hardware: 'Марка и комплектация уточняются',
+ customization: 'Размеры, материалы и наполнение подбираются при обсуждении индивидуального проекта.',
+ additionalImages: additional.map(name => ({ image: assetUrl(`/images/kitchens/${name}.jpg`), alt: `Кухня «${title}»: детали предоставленного изображения` })),
+});
 export const models: Model[] = [
- model('line', 'Линия', 'straight', false, ['top', 'wood'], 'Светлый фон и выразительная фактура'),
- model('balance', 'Баланс', 'corner', true, ['neoclassic', 'top'], 'Мягкие оттенки и рамочные фасады'),
- model('rhythm', 'Ритм', 'u', true, ['art-deco', 'top'], 'Ритмичная геометрия и контрасты'),
- model('grove', 'Роща', 'corner', false, ['wood'], 'Тёплые фактуры в спокойном пространстве'),
- model('graphite', 'Графит', 'straight', true, ['character', 'wood'], 'Тёмные плоскости и лаконичные линии'),
- model('heritage', 'Наследие', 'u', false, ['classic'], 'Симметрия и выразительное обрамление'),
- model('horizon', 'Горизонт', 'corner', false, ['top', 'character'], 'Чистая композиция и глубокий цвет'),
- model('ivory', 'Слоновая кость', 'straight', false, ['neoclassic', 'classic'], 'Светлая интерпретация классических форм'),
- model('amber', 'Янтарь', 'u', true, ['wood', 'top'], 'Тёплая композиция с отдельным островом'),
- model('contour', 'Контур', 'u', false, ['character'], 'Строгие объёмы и графичные акценты'),
- model('crescent', 'Полумесяц', 'corner', true, ['art-deco'], 'Арочные детали и декоративный ритм'),
- model('estate', 'Усадьба', 'corner', false, ['classic', 'neoclassic'], 'Традиционная композиция в тёплых тонах'),
+ photographedModel('terracotta', 'Терракота', 'corner', ['top', 'character'], 'Графитовые плоскости, выразительный фартук и тёплые акценты обеденной зоны', ['terracotta-details', 'terracotta-triptych']),
+ photographedModel('olive', 'Олива', 'u', ['top', 'neoclassic', 'classic'], 'Приглушённый зелёный, рамочные фасады и светлая рабочая поверхность', ['olive-details']),
+ photographedModel('oak-room', 'Дубрава', 'corner', ['top', 'wood', 'art-deco'], 'Древесный рисунок, рифлёный акцент и высокая стеклянная витрина'),
+ photographedModel('contour', 'Контур', 'corner', ['top', 'wood', 'character'], 'Тёплая древесная фактура, чёткие линии и контрастные тёмные детали', ['contour-details']),
+ { ...photographedModel('graphite', 'Графит', 'corner', ['top', 'character'], 'Тёмные фасады и тёплое внутреннее пространство с подсвеченной витриной'), imageCaption: 'На предоставленном изображении показано внутреннее наполнение кухни' },
+ model('arfa', 'Арфа', 'straight', false, ['top', 'character', 'art-deco'], 'Тёмные матовые фасады, рифлёный акцент и выразительный рисунок фартука', 'МДФ 19 мм с рифлёной фрезеровкой, покрытие матовой эмалью'),
+ model('brooklyn', 'Бруклин', 'corner', false, ['neoclassic', 'wood'], 'Светлые фасады с тонкой рамкой и древесный акцент', 'МДФ 19 мм, матовая эмаль, фрезеровка «тонкая рамка»'),
+ model('street', 'Стрит', 'straight', false, ['top', 'wood', 'character'], 'Строгая геометрия, спокойные фасады и тёплая древесная фактура', 'Экстраматовая МДФ-плита, покрытая нанопластиком Uniton', 'Палитра производителя'),
+ model('villa', 'Вилла', 'straight', false, ['top'], 'Тёплый цвет, гладкие фасады и интегрированные ручки', 'МДФ 19 мм с интегрированной ручкой, покрытие матовой эмалью'),
+ model('rif', 'Риф', 'corner', false, ['top', 'art-deco'], 'Рифлёные поверхности, мягкие оттенки и закруглённая деталь', 'МДФ 19 мм с рифлёной фрезеровкой, покрытие матовой эмалью'),
+ { ...model('golden-stripe', 'Золотая полоса', 'corner', null, ['top', 'art-deco'], 'Вертикальный ритм фасадов и тонкая вставка под золото', 'МДФ с матовой эмалью; две фрезеровки соединены пластиковой или металлической вставкой, имитирующей золото'), additionalImages: [{ image: assetUrl('/images/kitchens/golden-stripe-alt.jpg'), alt: 'Кухня «Золотая полоса»: дополнительный вариант композиции из сообщества салона' }] },
+ model('scandinavia', 'Скандинавия', 'corner', null, ['top', 'wood'], 'Древесный рисунок, светлые поверхности и выразительный фартук', 'МДФ, облицованная с двух сторон пластиком ETERNO', 'Палитра производителя; в описании указано несколько коллекций'),
+ model('verona', 'Верона', 'straight', false, ['neoclassic', 'classic'], 'Фигурные рамочные фасады в глубоком цвете и светлые верхние шкафы', 'МДФ 22 мм с фигурной фрезеровкой, покрытие матовой эмалью'),
+
 ];
+export function selectCatalogModels(groupId: string, source: readonly Model[] = models): Model[] {
+ return source.filter(item => item.catalogGroupId === groupId);
+}
 export const projects: Project[] = [
- { id: 'quiet-space', title: 'Пространство в мягких тонах', description: 'Пример страницы проекта с кухней и островом. Иллюстрация показывает структуру будущей галереи.', image: assetUrl('/images/kitchen.svg'), demo: true },
- { id: 'everyday-order', title: 'Порядок в деталях', description: 'Пример страницы проекта с системой хранения. Фотографии и описание реальной работы будут добавлены после согласования.', image: assetUrl('/images/wardrobe.svg'), demo: true },
+ { id: 'quiet-space', title: 'Мягкий свет', description: 'Кухня с продолжением в гостиную: спокойные серо-голубые фасады, тёплые акценты и подсвеченные витрины. Фотографии и видеоотзыв предоставлены заказчиком.', image: assetUrl('/images/projects/soft-light.jpg'), demo: false, furnitureType: 'Кухня и продолжение в гостиную',
+ additionalImages: [
+  { image: assetUrl('/images/projects/soft-light-worktop.jpg'), alt: 'Кухня «Мягкий свет»: рабочая зона и подсвеченные витрины' },
+  { image: assetUrl('/images/projects/soft-light-detail.jpg'), alt: 'Кухня «Мягкий свет»: мойка, рабочая поверхность и детали фасадов' },
+ ],
+ features: ['Единая композиция связывает кухонную зону и продолжение в гостиную.', 'Рамочные фасады, ручки тёплого оттенка и витрины с подсветкой создают спокойный ритм интерьера.', 'Название «Мягкий свет» — рабочее, для прототипа. Размеры, материалы и комплектация обсуждаются индивидуально. Стоимость — индивидуальный расчёт.'],
+ videoReview: { src: assetUrl('/videos/soft-light-review.mp4'), poster: assetUrl('/images/projects/review-poster.jpg'), title: 'Видеоотзыв клиента о кухне и продолжении в гостиную' } },
 ];
-export const reviews = [
- { id: 'review-1', title: 'О выборе планировки', text: '«В этом блоке будет отзыв о том, как проходило обсуждение планировки и выбор мебели».', demo: true },
- { id: 'review-2', title: 'О процессе заказа', text: '«Здесь можно будет прочитать впечатления заказчика о взаимодействии с салоном».', demo: true },
+export type Review = { id: string; title: string; text: string; demo: boolean; videoUrl?: string; videoPoster?: string; captionsUrl?: string };
+export const reviews: Review[] = [
+ { id: 'victoria', title: 'Виктория', text: 'Шикарная, ребята вчера всё установили. Я в восторге, спасибо вам!', demo: false },
+ { id: 'rimma', title: 'Римма', text: 'Шкаф и комод установили, я ещё не видела, но сын сказал — мощно, спасибо большое!', demo: false },
+ { id: 'andrey', title: 'Андрей', text: 'С заказом всё отлично, спасибо большое. Пользуемся', demo: false },
 ];
 export const promotions: Promotion[] = [
  { id: 'season', title: 'Сезонное предложение', description: 'Демонстрация карточки акции. Состав предложения, даты и условия ещё не утверждены.', demo: true },
  { id: 'collection', title: 'Предложение для коллекции', description: 'Место для будущего предложения по моделям. Действующая скидка не заявлена.', demo: true },
 ];
 export const steps = [
- { title: 'Знакомство с задачей', text: 'Обсуждение пространства, пожеланий и сценариев использования.' },
- { title: 'Планировка и проект', text: 'Проработка расположения мебели и деталей будущего решения.' },
- { title: 'Согласование заказа', text: 'Уточнение комплектации и индивидуального расчёта.' },
- { title: 'Реализация', text: 'Изготовление, доставка и установка — порядок и условия нужно подтвердить.' },
+ { title: 'Консультация', text: 'Обсуждаем пожелания, размеры, стиль и примерный бюджет. Знакомим с возможностями производства и материалами.' },
+ { title: 'Предварительный проект', text: 'Подготавливаем проект и ориентировочный расчёт стоимости. Работа возможна в салоне или дистанционно.' },
+ { title: 'Замер', text: 'Согласовываем время замера помещения. После него уточняем проект с учётом реальных размеров.' },
+ { title: 'Согласование деталей', text: 'Выбираем фасады, цвета, материалы, столешницу, фурнитуру и внутреннее наполнение. Уточняем окончательную стоимость мебели и услуг.' },
+ { title: 'Договор', text: 'Оформляем договор, принимаем предоплату и передаём проект на техническое согласование.' },
+ { title: 'Производство', text: 'После необходимых проверок заказ поступает в производство и проходит контроль качества.' },
+ { title: 'Доставка и монтаж', text: 'Согласовываем дату доставки, устанавливаем мебель и проводим приёмку выполненных работ.' },
 ];
 export const buyerTopics = [
- { id: 'order', title: 'Как заказать', summary: 'От знакомства с задачей до согласования проекта.', text: 'Предварительная схема приведена ниже. Порядок замера, согласования проекта и заключения договора требует подтверждения салоном.' },
- { id: 'payment', title: 'Оплата', summary: 'Порядок расчётов согласуется с заказом.', text: 'Способы оплаты, этапность и необходимые документы пока не утверждены. В прототипе оплата не принимается.' },
- { id: 'delivery', title: 'Доставка и установка', summary: 'Что предстоит уточнить до оформления заказа.', text: 'География, стоимость, сроки, условия подъёма и установки требуют подтверждения. Прототип не устанавливает эти условия.' },
- { id: 'warranty-care', title: 'Гарантия и уход', summary: 'Условия обслуживания и рекомендации для выбранного решения.', text: 'Гарантийные условия должны быть подтверждены. Рекомендации по уходу будут зависеть от согласованных материалов и инструкций изготовителей.' },
+ { id: 'order', title: 'Как заказать', summary: 'Семь этапов — от консультации до установки.', text: 'Обсудим идею, согласуем проект и материалы, затем пройдём путь изготовления и установки.' },
+ { id: 'payment', title: 'Оплата', summary: 'Предоплата от 30% и порядок расчётов по договору.', text: 'Условия оплаты из брифа салона — для предварительного согласования.' },
+ { id: 'delivery', title: 'Сроки, доставка и монтаж', summary: 'Ориентир изготовления — 21–45 рабочих дней.', text: 'Сроки и услуги согласовываются для конкретного проекта.' },
+ { id: 'warranty-care', title: 'Гарантия', summary: 'Гарантия и срок службы — в деталях.', text: 'Условия для выбранной мебели уточняются при оформлении заказа.' },
+ { id: 'care', title: 'Уход', summary: 'Простые привычки для вашей мебели.', text: 'Рекомендации зависят от выбранных материалов.' },
 ];
 export const faq = [
- { id: 'estimate', question: 'Как подготовиться к обсуждению кухни?', answer: 'Можно заранее сформулировать пожелания и выбрать понравившиеся примеры. Окончательный перечень данных для индивидуального расчёта салону предстоит подтвердить.', demo: true },
- { id: 'example', question: 'Можно ли заказать кухню точно как на картинке?', answer: 'Иллюстрации демонстрационные. Они помогают обсудить направление; материалы, конфигурация и возможность реализации должны подтверждаться отдельно.', demo: true },
+ { id: 'timing', question: 'Сколько времени изготавливается мебель?', answer: 'Ориентировочно 21–45 рабочих дней. Точный срок зависит от проекта и фиксируется в договоре.', demo: false },
+ { id: 'remote', question: 'Можно ли обсудить проект дистанционно?', answer: 'Да, предварительный проект можно обсудить дистанционно. Удобный формат и необходимые материалы согласуйте с командой салона.', demo: false },
+ { id: 'dimensions', question: 'Можно ли изготовить мебель по нестандартным размерам?', answer: 'Салон работает с индивидуальными проектами. Размеры и техническую возможность исполнения конкретного изделия уточняем после обсуждения и замера.', demo: false },
+ { id: 'estimate', question: 'Как рассчитывается стоимость?', answer: 'Индивидуально, с учётом размеров, материалов и комплектации. Доставка, подъём и монтаж согласовываются отдельно; окончательная стоимость фиксируется при оформлении заказа.', demo: false },
+ { id: 'facades', question: 'Какие варианты фасадов существуют?', answer: 'В предоставленном списке есть МДФ в плёнке ПВХ, матовая и глянцевая эмаль, пластик, шпон и мультишпон. Конкретные серии, декоры и применение к выбранной модели обсуждаются отдельно.', demo: false },
+ { id: 'hardware', question: 'Можно ли выбрать фурнитуру?', answer: 'В перечне салона представлены Blum и Boyard. Подходящие механизмы и комплектацию подбираем под конкретный проект.', demo: false },
+ { id: 'installation', question: 'Как организованы доставка и монтаж?', answer: 'Дату доставки и время монтажа согласовываем с клиентом. Стоимость услуг определяется отдельно. После установки проводится приёмка выполненных работ.', demo: false },
+ { id: 'warranty', question: 'Какой гарантийный срок?', answer: 'По информации салона — 2 года на мебель. Условия и применимость к конкретному изделию уточняются при оформлении договора. Заявленный срок службы более 15 лет не является гарантийным сроком.', demo: false },
+ { id: 'care', question: 'Как правильно ухаживать за фасадами и столешницами?', answer: 'Уход зависит от поверхности. Используйте мягкую ткань, своевременно удаляйте влагу и применяйте подходящие для выбранного материала средства с учётом рекомендаций изготовителя.', demo: false },
+ { id: 'designer', question: 'Можно ли заказать мебель по проекту дизайнера?', answer: 'Передайте проект команде салона: обсудим задачу, материалы и возможность изготовления. Технические решения и условия требуют индивидуального согласования.', demo: false },
 ];
 export const contacts = {
  phone: '+7 (985) 205-02-12', phoneHref: 'tel:+79852050212', extraPhone: '+7 (926) 336-44-06', extraPhoneHref: 'tel:+79263364406',
- address: 'Москва, Новоухтомское шоссе, д. 2А, ТЦ «Город Косино», 3-й этаж', hours: '10:00–22:00', region: 'Москва и Московская область', director: 'Анна',
+ address: 'Москва, Новоухтомское шоссе, д. 2А, ТЦ «Город Косино», 3-й этаж', hours: '10:00–22:00', region: 'Москва и Московская область', director: 'Анна Ярошинская', salonName: 'Walenza мебель', landmarks: 'Ориентиры: «Интерьер Холл» и «Мебель Рум»', emails: ['adorisanna@mail.ru', 'mxralex24@mail.ru'],
  maxUrl: null, telegramUrl: null, directorUrl: null, aiUrl: null,
 };
 export const furnitureDirections = [
@@ -71,10 +108,37 @@ export const furnitureDirections = [
  { id: 'children', title: 'Детские', text: 'Пример направления: мебель для детского пространства. Ассортимент и требования требуют согласования.' },
  { id: 'hallways', title: 'Прихожие', text: 'Пример направления: хранение во входной зоне. Подробности появятся после наполнения.' },
 ];
-export const materialCategories = [
- { id: 'facades', title: 'Фасадные материалы', image: assetUrl('/images/materials/facades.jpg'), description: 'Фактура и цвет задают настроение мебели.', examples: ['Светлая гладкая поверхность', 'Выразительная древесная фактура', 'Приглушённый цвет и рамочная композиция'] },
- { id: 'components', title: 'Каркасы и комплектующие', image: assetUrl('/images/materials/components.jpg'), description: 'Основа композиции и организация внутреннего пространства.', examples: ['Светлая внутренняя поверхность', 'Полки и разделители пространства', 'Условный пример соединений'] },
- { id: 'countertops', title: 'Столешницы', image: assetUrl('/images/materials/countertops.jpg'), description: 'Поверхности, которые связывают интерьер воедино.', examples: ['Светлая поверхность с мягким рисунком', 'Тёмная выразительная поверхность', 'Спокойная однородная фактура'] },
- { id: 'hardware', title: 'Фурнитура', image: assetUrl('/images/materials/hardware.jpg'), description: 'Детали ежедневного взаимодействия с мебелью.', examples: ['Пример петли', 'Пример направляющей', 'Пример ручки'] },
+export type MaterialEntry = { title: string; detail?: string; brands?: string[] };
+export type MaterialVisual = { id: string; title: string; description: string; image: string; alt: string; demo: boolean };
+export type MaterialCategory = { id: string; title: string; image: string; description: string; visuals: MaterialVisual[]; entries: MaterialEntry[] };
+const materialVisual = (id: string, title: string, description: string, alt: string): MaterialVisual => ({ id, title, description, image: assetUrl(`/images/materials/samples/${id}.jpg`), alt, demo: true });
+export const materialCategories: MaterialCategory[] = [
+ { id: 'facades', title: 'Фасадные материалы', image: assetUrl('/images/materials/facades.jpg'), description: 'Фактура и цвет задают настроение мебели.', visuals: [
+  materialVisual('matte', 'Матовые поверхности', 'Мягкий цвет и спокойная поверхность без ярких отражений. Здесь — пример в приглушённом зелёном оттенке.', 'Сгенерированный пример: матовый зелёный фасад крупным планом'),
+  materialVisual('gloss', 'Глянцевые поверхности', 'Свет и отражения становятся частью композиции. На светлом фасаде хорошо заметен характер блеска.', 'Сгенерированный пример: светлый глянцевый фасад с отражением окна'),
+  materialVisual('wood', 'Древесные фактуры', 'Рисунок волокон, переходы оттенков и ощущение тепла. Пример помогает представить древесный акцент в мебели.', 'Сгенерированный пример: три образца с древесным рисунком от светлого до тёмного'),
+ ], entries: [
+  { title: 'МДФ Egger' }, { title: 'МДФ в плёнке ПВХ' }, { title: 'Крашеный МДФ', detail: 'Матовый и глянцевый' },
+  { title: 'Eterno' }, { title: 'Rehau' }, { title: 'Пластик Arpa' }, { title: 'Шпон и мультишпон' },
+ ] },
+ { id: 'components', title: 'Каркасы и комплектующие', image: assetUrl('/images/materials/components.jpg'), description: 'Основа композиции и организация внутреннего пространства.', visuals: [
+  materialVisual('carcass', 'Основа мебели — в деталях', 'Открытый корпус показывает внутренние поверхности и полки, а отдельный образец — древесный декор и структуру ЛДСП на срезе.', 'Сгенерированный пример: светлый открытый корпус с полкой и образец ЛДСП с древесным декором'),
+ ], entries: [
+  { title: 'ЛДСП для каркасов', brands: ['Egger', 'Lamarty', 'Kronospan', 'Uvadrev'] },
+ ] },
+ { id: 'countertops', title: 'Столешницы', image: assetUrl('/images/materials/countertops.jpg'), description: 'Поверхности, которые связывают интерьер воедино.', visuals: [
+  materialVisual('hpl', 'HPL', 'Древесный или спокойный однотонный декор. На примере видны поверхность и торец столешницы.', 'Сгенерированный пример: столешницы с древесным и серым декором, виден срез плиты'),
+  materialVisual('stone', 'Искусственный камень', 'Светлые оттенки и мелкий рисунок поверхности. Крупный план помогает рассмотреть фактуру и край.', 'Сгенерированный пример: два светлых образца искусственного камня с мелкими вкраплениями'),
+  materialVisual('quartz', 'Кварцевый агломерат', 'Минеральный рисунок и мягкие прожилки. Здесь показан один из возможных визуальных характеров поверхности.', 'Сгенерированный пример: светлая столешница с минеральным рисунком и тёмный образец на фоне'),
+ ], entries: [
+  { title: 'HPL', brands: ['Мир столешниц', 'Союз', 'Slotex'] },
+  { title: 'Искусственный камень', brands: ['Formax', 'Primax', 'Staron', 'Grandex'] },
+  { title: 'Кварцевый агломерат', brands: ['Avant', 'Radianz', 'Cerastoun'] },
+ ] },
+ { id: 'hardware', title: 'Фурнитура', image: assetUrl('/images/materials/hardware.jpg'), description: 'Детали ежедневного взаимодействия с мебелью.', visuals: [
+  materialVisual('hardware', 'Как устроено движение', 'Направляющие выдвижного ящика и мебельная петля показаны вблизи. Конкретные механизмы и их возможности подбираются под проект.', 'Сгенерированный пример: открытый деревянный ящик с металлической направляющей и мебельная петля на столешнице'),
+ ], entries: [
+  { title: 'Blum' }, { title: 'Boyard' },
+ ] },
 ];
-export const contentRepository = { models, projects, reviews, promotions, steps, faq, contacts, collections, layouts, buyerTopics, furnitureDirections, materialCategories };
+export const contentRepository = { models, manufacturers, catalogGroups, projects, reviews, promotions, steps, faq, contacts, collections, layouts, buyerTopics, furnitureDirections, materialCategories };

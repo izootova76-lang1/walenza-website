@@ -40,3 +40,24 @@ Premium editorial photograph of several thick kitchen countertop sample slabs st
 Premium macro editorial product photograph of an open oak kitchen drawer with a clean generic concealed metal runner visible at the side, a brushed metal cabinet hinge and two simple handles placed on the ivory surface beside it, elegant practical precision, muted olive cabinetry in soft focus, warm natural light, realistic furniture hardware, no text, no branding, no people. Landscape 4:3, one coherent scene, no collage. Generic demo showroom image, no identifiable product brand.
 
 До финального наполнения заменить реальными согласованными материалами или отдельно согласовать использование этих визуалов как иллюстраций.
+
+## Визуальные образцы от 22 октября 2026
+
+Восемь дополнительных изображений созданы встроенным ImageGen: матовый фасад, глянцевый фасад, древесные фактуры, корпус ЛДСП, HPL, искусственный камень, кварцевый агломерат и фурнитура. Оптимизированные файлы: `public/images/materials/samples/`. Промпты, исходные файлы и порядок замены — в `MATERIAL_VISUALS.md`. Ни один образец не привязан к бренду.
+
+## Кухни из сообщества салона — 22 октября 2026
+
+Девять JPG для восьми моделей извлечены из предоставленных пользователем скриншотов. Только кадрирование и JPEG-кодирование, без генерации и дорисовки. Источники и координаты в `KITCHEN_MODELS_REVIEW.md`. Прежние SVG кухонь в каталоге не используются.
+
+## Шкафы и гардеробная — 22 октября 2026
+
+Все 14 визуалов предоставлены пользователем: шесть пар закрыто/открыто и два ракурса. Исходники не менялись; оптимизированные JPG в `public/images/storage/`. Соответствие исходным файлам — в `STORAGE_REVIEW.md`. Рабочие названия придуманы с разрешения пользователя.
+
+## Ещё пять кухонь и карусель главной
+
+Все 10 новых изображений предоставлены пользователем как реальная мебель. Дополнительно выделены пять фрагментов для композиций главной. Генерация и ретушь не выполнялись; исходники не изменены. Соответствие файлов, прямоугольники фрагментов и ограничения данных в `HOME_SHOWCASE_REVIEW.md`.
+
+
+## Реальный проект и видеоотзыв от 22 октября
+
+Три новые фотографии кухни и видео `VID_20261022_202504.mp4` предоставлены заказчиком для портфолио. Исходники не изменены; локальные оптимизированные копии и монтаж 50,918 с — в `public/images/projects/` и `public/videos/`. Подробные источники и таймкоды: `PROJECT_VIDEO_REVIEW.md`. Макеты проектов из галереи убраны.

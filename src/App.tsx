@@ -10,7 +10,7 @@ import Materials from './pages/Materials';
 export default function App() {
   const [contactIntent, setContactIntent] = useState<ContactIntent | null>(null);
   const onContact: OpenContact = (intent = { kind: 'request' }) => setContactIntent(intent);
-  return <><ScrollAndTitle /><Header onContact={onContact} /><div className="review-notice"><div className="container">Предварительная версия сайта. Структура и наполнение находятся на согласовании</div></div><main id="main" tabIndex={-1}><Routes>
+  return <><ScrollAndTitle /><Header onContact={onContact} /><div className="review-notice"><div className="container"><span className="approval-status">На согласовании</span> Предварительная версия сайта. Структура и наполнение находятся на согласовании</div></div><main id="main" tabIndex={-1}><Routes>
     <Route path="/" element={<Home onContact={onContact} />} />
     <Route path="/kitchens" element={<Kitchens />} />
     <Route path="/kitchens/models/:id" element={<ModelDetail onContact={onContact} />} />
@@ -18,7 +18,7 @@ export default function App() {
     <Route path="/materials" element={<Materials onContact={onContact} />} />
     <Route path="/projects" element={<Projects />} />
     <Route path="/projects/:id" element={<ProjectDetail onContact={onContact} />} />
-    <Route path="/customers" element={<Customers />} />
+    <Route path="/customers" element={<Customers onContact={onContact} />} />
     <Route path="/promotions" element={<Promotions />} />
     <Route path="/promotions/:id" element={<PromotionDetail />} />
     <Route path="/about" element={<About />} />

@@ -1,0 +1,103 @@
+/* Warm, lightweight layouts for the salon and buyer guide only. */
+.editorial-page { --editorial-accent: #b45d3e; --editorial-cream: #f1ece2; --editorial-sage: #e2e6da; }
+.editorial-page figure { margin: 0; }
+.visual-page-hero { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.3fr); align-items: center; gap: 56px; margin-bottom: 48px; }
+.visual-page-hero h1 { font-size: clamp(44px,4.6vw,68px); max-width: 12ch; margin-bottom: 24px; }
+.visual-hero-description { max-width: 39ch; color: var(--muted); font-size: 18px; line-height: 1.65; }
+.editorial-rule { display: block; width: 64px; height: 2px; background: var(--editorial-accent); margin-top: 30px; }
+.visual-page-hero figure { min-width: 0; }
+.visual-page-hero img { height: 420px; object-fit: cover; object-position: center; }
+.visual-page-hero figcaption { font-size: 12px; color: var(--muted); padding-top: 10px; line-height: 1.5; }
+.editorial-icon { width: 52px; height: 52px; border-radius: 50%; display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; background: var(--editorial-sage); color: #354239; }
+.editorial-icon svg { width: 27px; height: 27px; }
+.editorial-icon--payment, .editorial-icon--people { background: #f1d4c4; color: #88462f; }
+.editorial-icon--warranty, .editorial-icon--location { background: #eae2d3; }
+.visual-topic-grid, .salon-values { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 14px; margin-block: 30px 48px; }
+.visual-topic-grid > a, .salon-values > a { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; padding: 24px 20px; border: 1px solid var(--border); background: #fcfaf5; transition: border-color .18s, background .18s; }
+.visual-topic-grid > a:hover, .salon-values > a:hover, .visual-topic-grid > a[aria-current] { background: var(--editorial-cream); border-color: #c5a68f; }
+.visual-topic-grid h2, .salon-values h2 { font-size: 27px; letter-spacing: -.025em; line-height: 1.15; margin: 20px 0 12px; }
+.visual-topic-grid p, .salon-values p { font-size: 15px; line-height: 1.65; color: var(--muted); margin-bottom: 20px; }
+.visual-topic-grid a > span:last-child, .salon-values a > span:last-child { color: var(--editorial-accent); font-size: 25px; margin-top: auto; }
+.salon-values { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.salon-values > a { padding: 28px; }
+.buyer-visual-note { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 0; background: var(--editorial-cream); margin-bottom: 56px; }
+.buyer-visual-note > img { height: 320px; object-position: center 55%; }
+.buyer-visual-note > div { padding: 36px; align-self: center; }
+.buyer-visual-note h2 { font-size: 34px; }
+.buyer-key-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.buyer-key-facts strong { font: 36px var(--serif); display: block; margin-bottom: 8px; }
+.buyer-key-facts span { font-size: 14px; display: block; line-height: 1.5; }
+.buyer-visual-note .muted { margin: 0; font-size: 13px; }
+.buyer-panel-heading { display: flex; align-items: center; gap: 18px; min-width: 0; }
+.buyer-panel-heading h2 { font-size: 32px; margin: 0; }
+.buyer-panel-heading .editorial-icon { width: 42px; height: 42px; }
+.buyer-panel-heading svg { width: 23px; height: 23px; }
+.editorial-page .buyer-topics > details > div { padding-block: 8px 36px; }
+.visual-order-steps .order-timeline { max-width: none; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; counter-reset: order-stage; margin-block: 28px; }
+.visual-order-steps .order-timeline li { min-width: 0; counter-increment: order-stage; padding: 24px; background: #f3f1ea; border: 1px solid #e4e0d6; }
+.visual-order-steps .order-timeline li::before { content: counter(order-stage,decimal-leading-zero); position: static; width: auto; height: auto; background: none; display: block; color: var(--editorial-accent); font: 16px var(--serif); margin-bottom: 24px; }
+.visual-order-steps .order-dot { display: none; }
+.visual-order-steps .order-timeline h3 { font: 26px var(--serif); line-height: 1.2; margin-bottom: 12px; }
+.visual-order-steps .order-timeline p { font-size: 15px; }
+.visual-order-steps .order-timeline li:last-child { grid-column: 1 / -1; background: var(--editorial-sage); }
+.editorial-page .buyer-conditions { max-width: none; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; list-style: none; padding: 0; }
+.editorial-page .buyer-conditions li { min-width: 0; background: #f3f1ea; padding: 20px; border-left: 2px solid #c2886a; margin: 0; }
+.editorial-page .warranty-facts { background: var(--editorial-cream); border: 0; padding: 28px; }
+.editorial-help { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 32px; margin-top: 48px; background: var(--editorial-sage); }
+.editorial-help p:last-child { margin-bottom: 0; }
+.editorial-help .button { flex-shrink: 0; }
+.editorial-page .salon-story { background: var(--editorial-cream); padding: 36px; margin-block: 48px; }
+.editorial-page .salon-story h2 { font-size: 36px; }
+.editorial-page .salon-experience { border: 0; border-left: 1px solid #d1c5b6; }
+.editorial-page .salon-experience strong { color: var(--editorial-accent); }
+.editorial-page .team-grid { max-width: 1000px; gap: 48px; }
+.editorial-page .team-portrait { max-width: none; }
+.editorial-page .team-card { padding: 16px 16px 0; background: #f0ede5; }
+.editorial-page .team-card h3 { font-size: 28px; }
+.editorial-page .team-card > p { color: var(--muted); }
+.editorial-page .team-intro { max-width: 76ch; }
+.editorial-page .factory-block { padding-block: 48px; gap: 36px; }
+.editorial-page .factory-copy p { font-size: 16px; }
+.factory-draft-visual img { aspect-ratio: 4 / 3; height: auto; }
+.factory-draft-visual figcaption { font-size: 13px; line-height: 1.6; color: var(--muted); padding-top: 12px; }
+.factory-draft-visual figcaption span { display: block; color: #7b442e; margin-bottom: 4px; font-weight: 600; }
+.editorial-page .benefit-grid { gap: 16px; }
+.editorial-page .benefit-grid article { border: 1px solid var(--border); padding: 24px; background: #fcfaf5; }
+.editorial-page .benefit-grid h3 { margin-top: 20px; }
+.editorial-page .benefit-grid .editorial-icon { width: 40px; height: 40px; }
+.editorial-page .benefit-grid .editorial-icon svg { width: 22px; height: 22px; }
+@media (max-width: 1100px) {
+ .visual-order-steps .order-timeline { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .visual-page-hero { gap: 28px; }
+ .visual-topic-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+ .visual-page-hero img { height: 380px; }
+}
+@media (max-width: 760px) {
+ .visual-page-hero, .buyer-visual-note { grid-template-columns: 1fr; gap: 24px; }
+ .visual-page-hero { margin-bottom: 32px; }
+ .visual-page-hero h1 { max-width: 14ch; font-size: 46px; }
+ .visual-page-hero img { height: 280px; }
+ .visual-hero-description { font-size: 16px; }
+ .visual-topic-grid, .salon-values { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+ .visual-topic-grid > a, .salon-values > a { padding: 20px 16px; }
+ .visual-topic-grid h2, .salon-values h2 { font-size: 24px; }
+ .visual-topic-grid p, .salon-values p { font-size: 14px; }
+ .visual-topic-grid > a:last-child, .salon-values > a:last-child { grid-column: 1 / -1; }
+ .buyer-visual-note { gap: 0; }
+ .buyer-visual-note > img { height: 230px; }
+ .buyer-visual-note > div { padding: 24px; }
+ .buyer-key-facts { gap: 16px; }
+ .buyer-key-facts strong { font-size: 32px; }
+ .buyer-panel-heading { gap: 12px; }
+ .buyer-panel-heading h2 { font-size: 27px; }
+ .buyer-panel-heading .editorial-icon { width: 34px; height: 34px; }
+ .visual-order-steps .order-timeline { grid-template-columns: 1fr; }
+ .visual-order-steps .order-timeline li { padding: 24px; }
+ .visual-order-steps .order-timeline li::before { margin-bottom: 14px; }
+ .editorial-page .buyer-conditions { grid-template-columns: 1fr; }
+ .editorial-help { align-items: start; flex-direction: column; padding: 24px; }
+ .editorial-page .salon-story { padding: 24px; }
+ .editorial-page .salon-experience { padding: 20px 0 0; border-left: 0; border-top: 1px solid #d1c5b6; }
+ .editorial-page .team-grid { gap: 24px; }
+ .editorial-page .team-card h3 { font-size: 26px; }
+}
