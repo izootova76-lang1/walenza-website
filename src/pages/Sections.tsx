@@ -1,4 +1,5 @@
 import ProjectsPresentation, { ProjectVideo } from '../components/ProjectPresentation';
+import { PromotionsOverview, PromotionPresentation } from './Promotions';
 import ContactsPage from './Contacts';
 import PhotoGallery from '../components/PhotoGallery';
 import PilotCustomers from './PilotCustomers';
@@ -30,8 +31,8 @@ export function ProjectDetail({ onContact }: { onContact: OpenContact }) {
 }
 export function Customers({ onContact }: { onContact: OpenContact }) { return <PilotCustomers onContact={onContact} />; }
 
-export function Promotions() { return <div className="container page-content"><PageHeading eyebrow="Салон / Акции" title="Будущие предложения" description="Примеры карточек для проверки раздела. Действующие акции, скидки и сроки не заявлены." /><div className="promotion-grid">{contentRepository.promotions.map((item, i) => <Link className={`promotion-card promotion-${i}`} key={item.id} to={`/promotions/${item.id}`}><Demo>Демонстрационная акция</Demo><h2>{item.title}</h2><p>{item.description}</p><span className="text-link">Посмотреть пример <Arrow /></span></Link>)}</div></div>; }
-export function PromotionDetail() { const { id } = useParams(); const item = contentRepository.promotions.find(promotion => promotion.id === id); if (!item) return <NotFound />; return <div className="container page-content"><div className="breadcrumbs"><Link to="/promotions">Акции</Link><span>/</span><span>Пример карточки</span></div><PageHeading eyebrow="Демонстрационная акция" title={item.title} description={item.description} /><div className="info-note"><h3>Условия пока не утверждены</h3><p>Здесь появятся состав предложения, период действия, ограничения и порядок участия. Этот пример не является действующей акцией.</p></div><Link className="button" to="/kitchens">Познакомиться с моделями <Arrow /></Link></div>; }
+export function Promotions() { return <PromotionsOverview />; }
+export function PromotionDetail() { const { id } = useParams(); const item = contentRepository.promotions.find(promotion => promotion.id === id); return item ? <PromotionPresentation item={item} /> : <NotFound />; }
 export function About() {
  return <div className="container page-content about-page editorial-page">
   <VisualHero eyebrow="О салоне" title="Мебель с вниманием к вам" description="Московский салон кухонь, шкафов и гардеробных на заказ. Помогаем соединить красоту, удобство и ваш образ жизни." image="/images/visit/salon.jpg" alt="Реальный салон Walenza под вывеской «Интерьер Холл»" caption="Салон в ТЦ «Город Косино» · фото предоставлено заказчиком" />

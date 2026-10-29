@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { reviews, projects, type Project } from '../data/content';
 import { portfolioProjects, type PortfolioProject } from '../data/portfolio';
 import { Arrow } from './UI';
@@ -14,14 +15,14 @@ type View = {kind:'project';project:PortfolioProject} | {kind:'reviews'} | {kind
 function Quote(){return <svg viewBox="0 0 40 32" fill="currentColor" aria-hidden="true"><path d="M3 29V17C3 7 8 3 17 2v6c-5 1-7 3-7 7h8v14H3Zm20 0V17c0-10 5-14 14-15v6c-5 1-7 3-7 7h8v14H23Z"/></svg>;}
 function Play(){return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 7 7 5-7 5V7Z"/></svg>;}
 
-export default function ProjectsPresentation(){
+export default function ProjectsPresentation({ preview = false }: { preview?: boolean } = {}){
  const grid=useRef<HTMLDivElement>(null),dialog=useRef<HTMLDialogElement>(null),video=useRef<HTMLVideoElement>(null),opener=useRef<HTMLElement|null>(null);
  const [view,setView]=useState<View|null>(null),[selected,setSelected]=useState(0);
  const heading=useId(),touch=useRef<{x:number;y:number}|null>(null);
  const videoReview=projects.find(p=>p.videoReview)?.videoReview;
  // Natural photograph proportions; packed columns keep DOM and keyboard order.
  useEffect(()=>{
-  const el=grid.current;if(!el)return;let frame=0;
+  const el=grid.current;if(!el||preview)return;let frame=0;
   const layout=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{
    const columns=innerWidth<=640?1:innerWidth<=1000?2:3,ends=Array(columns).fill(1);
    Array.from(el.children).forEach(card=>{const node=card as HTMLElement,inner=node.firstElementChild as HTMLElement;
@@ -32,7 +33,7 @@ export default function ProjectsPresentation(){
   });};
   const observer=new ResizeObserver(layout);observer.observe(el);Array.from(el.children).forEach(card=>observer.observe(card.firstElementChild!));window.addEventListener('resize',layout);layout();
   return()=>{observer.disconnect();window.removeEventListener('resize',layout);cancelAnimationFrame(frame);};
- },[]);
+ },[preview]);
  useEffect(()=>{if(view&&!dialog.current?.open)dialog.current?.showModal();},[view]);
  useEffect(()=>{if(view)dialog.current?.querySelector<HTMLElement>('[data-view-focus]')?.focus();},[view]);
  const open=(next:View)=>{opener.current=document.activeElement as HTMLElement;setSelected(0);setView(next);};
@@ -41,11 +42,12 @@ export default function ProjectsPresentation(){
  const photos=view?.kind==='project'?view.project.photos:[];
  const move=(step:number)=>setSelected(i=>(i+step+photos.length)%photos.length);
  const pocket=<div className="portfolio-entry" key="reviews"><button type="button" className="portfolio-review-pocket" onClick={()=>open({kind:'reviews'})} aria-haspopup="dialog"><span className="portfolio-paper-stack" aria-hidden="true"><i/><i/><i/></span><span className="portfolio-pocket-face"><Quote/><span className="portfolio-pocket-title">Отзывы клиентов</span><strong>У каждого дома<br/>своя история.</strong><span>А у наших клиентов — свои впечатления</span><span className="portfolio-pocket-invitation">Посмотреть отзывы <Arrow/></span></span></button></div>;
- const cards=portfolioProjects.map(project=><article className="portfolio-entry" key={project.id}><button type="button" className="portfolio-project" onClick={()=>open({kind:'project',project})} aria-haspopup="dialog" aria-label={`Рассмотреть: ${project.title}`}><span className="portfolio-cover"><img src={project.photos[0].image} alt={project.photos[0].alt} loading="lazy"/><span className="portfolio-photo-arrow"><Arrow/></span></span><span className="portfolio-caption"><strong>{project.title}</strong>{project.visual&&<small>Предоставленный визуал</small>}</span></button></article>);
+ const visibleProjects=preview?portfolioProjects.filter(project=>['island','arched-windows','wood'].includes(project.id)):portfolioProjects;
+ const cards=visibleProjects.map(project=><article className="portfolio-entry" key={project.id}><button type="button" className="portfolio-project" onClick={()=>open({kind:'project',project})} aria-haspopup="dialog" aria-label={`Рассмотреть: ${project.title}`}><span className="portfolio-cover"><img src={project.photos[0].image} alt={project.photos[0].alt} loading="lazy"/><span className="portfolio-photo-arrow"><Arrow/></span></span><span className="portfolio-caption"><strong>{project.title}</strong>{project.visual&&<small>Предоставленный визуал</small>}</span></button></article>);
  cards.splice(3,0,pocket);
- return <div className="container page-content portfolio-page">
-  <header className="portfolio-heading"><h1>Портфолио</h1><p>Интерьеры, в которых идеи стали реальностью</p></header>
-  <div className="portfolio-grid" ref={grid}>{cards}</div>
+ return <div className={preview?"home-portfolio portfolio-page":"container page-content portfolio-page"}>
+  <header className={preview?"home-unified-heading":"portfolio-heading"}>{preview?<h2>Портфолио</h2>:<h1>Портфолио</h1>}<p>Интерьеры, в которых идеи стали реальностью</p>{preview&&<Link className="text-link" to="/projects">Все проекты <Arrow/></Link>}</header>
+  <div className={preview?"portfolio-grid home-portfolio-grid":"portfolio-grid"} ref={grid}>{cards}</div>
   <dialog ref={dialog} className={`portfolio-dialog${view?.kind==='project'?' portfolio-dialog--project':''}`} aria-labelledby={heading} onClick={e=>{if(e.target===e.currentTarget)close();}} onCancel={e=>{if(e.target===e.currentTarget){e.preventDefault();close();}}} onKeyDown={e=>{if(view?.kind==='project'&&(e.key==='ArrowRight'||e.key==='ArrowLeft')&&!document.querySelector('.compact-photo-dialog[open]')){e.preventDefault();move(e.key==='ArrowRight'?1:-1);}}}>
    {view&&<><header className="portfolio-dialog-heading"><div>{(view.kind==='text'||view.kind==='video')&&<button type="button" data-view-focus className="portfolio-back" onClick={back}>← К отзывам</button>}<h2 id={heading}>{view.kind==='project'?view.project.title:view.kind==='text'?reviews[view.index].title:view.kind==='video'?'Видеоотзыв клиента':'Отзывы клиентов'}</h2></div><button type="button" data-view-focus={view.kind==='project'||view.kind==='reviews'?true:undefined} className="portfolio-close" aria-label="Закрыть просмотр" onClick={close}>×</button></header>
     {view.kind==='project'&&<div className="portfolio-project-gallery">

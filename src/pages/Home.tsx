@@ -1,18 +1,47 @@
 import { Link } from 'react-router-dom';
 import HomeShowcase from '../components/HomeShowcase';
-import { benefits, team } from '../data/salon';
-import { assetUrl } from '../assetUrl';
-import { contentRepository, buyerTopics, materialCategories, type OpenContact } from '../data/content';
-import { Arrow, ContactBlock, Demo, ProjectCard, SectionHeading, Steps } from '../components/UI';
+import ProjectsPresentation from '../components/ProjectPresentation';
+import { team, teamText } from '../data/salon';
+import { materialCategories, contacts, type OpenContact } from '../data/content';
+import { customerSections } from '../data/customerPocket';
+import { portfolioProjects } from '../data/portfolio';
+import { storageItems } from '../data/storage';
+import { Arrow } from '../components/UI';
+import { LineIcon, type IconName } from '../components/Editorial';
+import '../home-unified.css';
+
+const buyerIcons: Record<string,IconName> = { order:'signed-document', payment:'payment', delivery:'delivery', warranty:'warranty', care:'cloth' };
 export default function Home({ onContact }: { onContact: OpenContact }) {
+ const kitchen=portfolioProjects.find(project=>project.id==='island')!.photos[0];
+ const storage=storageItems.find(item=>item.id==='salon-dressing')!.images.facades!;
  return <>
-  <HomeShowcase onContact={onContact} />
-  <section className="section container"><SectionHeading ruled eyebrow="Основные направления" title="Мебель в ритме вашей жизни" /><div className="directions"><Link className="direction-card" to="/kitchens"><img src={assetUrl('/images/kitchens/contour.jpg')} alt="Кухня с древесными фасадами из предоставленных заказчиком материалов" loading="lazy" /><div><span>Кухни</span><h3>Место, где собираются.</h3><span className="text-link">Каталог настроений <Arrow /></span></div></Link><Link className="direction-card" to="/furniture"><img src={assetUrl('/images/storage/laguna-facades.jpg')} alt="Шкаф с голубыми фасадами из предоставленных заказчиком материалов" loading="lazy" /><div><span>Шкафы и гардеробные</span><h3>У каждой вещи своё место.</h3><span className="text-link">Решения для хранения <Arrow /></span></div></Link></div><div className="additional-directions"><div><p className="eyebrow">Другие пространства</p><Link className="text-link" to="/furniture#additional">Корпусная мебель <Arrow /></Link></div><div>{contentRepository.furnitureDirections.map(item => <Link key={item.id} to={`/furniture#${item.id}`}>{item.title} <Arrow /></Link>)}</div></div></section>
-  <section className="section container"><SectionHeading ruled eyebrow="Проекты и впечатления" title="Мебель в жизни наших клиентов" to="/projects" link="Портфолио" /><div className="home-real-projects">{contentRepository.projects.filter(project => !project.demo).map(project => <ProjectCard key={project.id} project={project} />)}<div className="home-project-story"><p className="eyebrow">Кухня и гостиная</p><h3>Одна история пространства</h3><p>Общий вид, детали мебели и впечатления клиента — в первом проекте нашей галереи.</p><Link className="text-link" to="/projects/quiet-space#project-video-title">Смотреть видеоотзыв <Arrow /></Link></div></div><div className="home-review-heading"><h3>Отзывы покупателей</h3><span className="pending-label">На согласовании</span></div><div className="review-grid home-reviews" tabIndex={0} role="region" aria-label="Отзывы покупателей — горизонтальная прокрутка на телефоне">{contentRepository.reviews.map(review => <article className="review-card real-review" key={review.id}><blockquote>«{review.text}»</blockquote><p>{review.title}</p>{review.videoUrl && <video controls preload="none" src={review.videoUrl} poster={review.videoPoster}>{review.captionsUrl && <track kind="captions" src={review.captionsUrl} srcLang="ru" label="Русские субтитры" default />}</video>}</article>)}</div></section>
-  <section className="section container material-home"><div className="material-home-image"><img src={materialCategories[0].image} alt="Сгенерированная демонстрационная фотография фасадных образцов" loading="lazy" /><Demo>Демонстрационный визуал</Demo></div><div><p className="eyebrow eyebrow--ruled">Материалы и детали</p><h2>Характер складывается<br />из деталей.</h2><p>Познакомьтесь с фактурами и элементами мебели. Примеры помогают начать разговор, окончательный ассортимент предстоит согласовать.</p><div className="material-home-links">{materialCategories.map(item => <Link key={item.id} to={`/materials?category=${item.id}`}>{item.title} <Arrow /></Link>)}</div><Link className="text-link" to="/materials">Открыть каталог материалов <Arrow /></Link></div></section>
-  <section className="section container salon-process"><SectionHeading eyebrow="О салоне и работе над проектом" title="От первой идеи до вашей мебели" to="/about" link="Знакомство с командой" /><p className="section-description">Анна Ярошинская и Татьяна Комарова — руководители московского салона WALENZA. Команда помогает подобрать материалы, подготовить проект и пройти путь до установки мебели.</p><div className="pilot-team-strip">{team.map(person => <figure key={person.id}><img src={person.image} alt={person.alt} loading="lazy" /><figcaption>{person.name}<span>{person.role}</span></figcaption></figure>)}</div><div className="home-benefits">{benefits.slice(0,3).map(item => <details key={item.title}><summary><h3>{item.title}</h3><span aria-hidden="true">+</span></summary><p>{item.text}</p></details>)}</div><details className="pilot-home-expand"><summary>Как мы работаем <Arrow /></summary><Steps compact /></details><Link className="text-link process-link" to="/customers#order">Все семь этапов заказа <Arrow /></Link></section>
-  <section className="section container buyer-home"><SectionHeading eyebrow="Полезное покупателям" title="Продумали не только мебель, но и всё вокруг неё" /><details className="pilot-home-expand"><summary>Заказ, оплата, доставка, гарантия и уход <Arrow /></summary><div className="buyer-links">{buyerTopics.map(item => <Link key={item.id} to={`/customers#${item.id}`}><h3>{item.title}</h3><p>{item.summary}</p><Arrow /></Link>)}</div><p className="ai-entry">AI-помощник в Telegram</p><p className="muted">Будущий отдельный бот. Ссылка появится после запуска.</p></details></section>
-  <section className="section container home-offers"><SectionHeading eyebrow="Предложения салона" title="Акции и специальные предложения" to="/promotions" link="Все акции" /><details className="pilot-home-expand"><summary>Посмотреть предложения <Arrow /></summary><div className="offer-links">{contentRepository.promotions.map(item => <Link key={item.id} to={`/promotions/${item.id}`}><Demo>Демонстрационная акция</Demo><h3>{item.title}</h3><Arrow /></Link>)}</div></details></section>
-  <div className="container"><ContactBlock onContact={onContact} /></div>
+  <HomeShowcase onContact={onContact}/>
+  <div className="home-unified container">
+   <section className="home-unified-section" aria-labelledby="home-catalog-title">
+    <header className="home-unified-heading"><h2 id="home-catalog-title">Кухни и шкафы</h2></header>
+    <div className="home-catalog-directions">
+     <Link className="home-catalog-direction" to="/kitchens"><img src={kitchen.image} alt={kitchen.alt} loading="lazy"/><span><strong>Кухни</strong><Arrow/></span></Link>
+     <Link className="home-catalog-direction" to="/furniture"><img src={storage.src} alt={storage.alt} loading="lazy"/><span><strong>Шкафы и гардеробные</strong><Arrow/></span></Link>
+    </div>
+   </section>
+   <section className="home-unified-section" aria-label="Проекты и отзывы"><ProjectsPresentation preview/></section>
+   <section className="home-unified-section" aria-labelledby="home-materials-title">
+    <header className="home-unified-heading"><h2 id="home-materials-title">Материалы и детали</h2><p>Красота мебели начинается с фактур, поверхностей и продуманных деталей</p><Link className="text-link" to="/materials">Все материалы <Arrow/></Link></header>
+    <div className="home-material-categories">{materialCategories.map(item=><Link key={item.id} to={`/materials?category=${item.id}`}><img src={item.image} alt={`Демонстрационный образец: ${item.title}`} loading="lazy"/><span><strong>{item.title}</strong><Arrow/></span></Link>)}</div>
+    <p className="home-material-note">Изображения образцов — демонстрационные. Окончательный ассортимент предстоит согласовать.</p>
+   </section>
+   <section className="home-unified-section home-salon-preview" aria-labelledby="home-salon-title">
+    <div className="home-salon-copy"><h2 id="home-salon-title">Знакомьтесь, Анна и Татьяна</h2><p>{teamText[0]}</p><Link className="text-link" to="/about">О салоне и команде <Arrow/></Link></div>
+    <div className="home-salon-people">{team.map(person=><figure key={person.id}><img src={person.image} alt={person.alt} loading="lazy" width="800" height="1000"/><figcaption>{person.name}</figcaption></figure>)}</div>
+   </section>
+   <section className="home-unified-section home-buyer-preview" aria-labelledby="home-buyers-title">
+    <header className="home-unified-heading"><h2 id="home-buyers-title">Покупателям</h2><p>Заказ, условия и уход за мебелью</p><Link className="text-link" to="/customers">Вся информация <Arrow/></Link></header>
+    <div className="home-buyer-links">{customerSections.map(item=><Link key={item.id} to={`/customers#${item.id}`}><LineIcon name={buyerIcons[item.id]}/><span>{item.label}</span><Arrow/></Link>)}</div>
+   </section>
+   <section className="home-unified-section home-invitation" aria-labelledby="home-invitation-title">
+    <div><h2 id="home-invitation-title">Есть идея для вашего интерьера?</h2><p>Расскажите нам о ней — вместе обсудим возможное решение</p><Link className="text-link" to="/contacts">Как нас найти <Arrow/></Link><p className="home-invitation-address">{contacts.address}</p></div>
+    <div className="home-invitation-actions"><button type="button" className="button" onClick={()=>onContact({kind:'request'})}>Оставить заявку <Arrow/></button><button type="button" className="button home-director-button" onClick={()=>onContact({kind:'director'})}>Написать директору <Arrow/></button></div>
+   </section>
+  </div>
  </>;
 }
