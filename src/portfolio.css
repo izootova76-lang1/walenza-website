@@ -1,0 +1,44 @@
+.journal-shell .portfolio-page{padding-block:32px 48px;max-width:1200px}
+.portfolio-heading{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:30px}
+.journal-shell .portfolio-heading h1{margin:0;font-size:clamp(38px,4.3vw,62px);line-height:1.1}
+.portfolio-heading p{max-width:360px;margin:0;color:#555960;font-size:18px;line-height:1.5}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:1px;column-gap:24px;align-items:start}
+.portfolio-entry{min-width:0;margin:0}
+.portfolio-project{display:block;width:100%;padding:0;text-align:left;border:0;background:none;color:inherit;cursor:pointer;font:inherit}
+.portfolio-cover{display:block;position:relative;border-radius:6px;overflow:hidden}
+.portfolio-cover>img{display:block;width:100%;height:auto}
+.portfolio-photo-arrow{position:absolute;bottom:12px;right:12px;display:grid;place-items:center;width:38px;height:38px;background:#fff;color:#75233a;border-radius:50%;transition:background .2s,color .2s}
+.portfolio-photo-arrow svg{width:19px}.portfolio-project:hover .portfolio-photo-arrow{background:#75233a;color:#fff}
+.portfolio-caption{display:flex;flex-direction:column;gap:5px;padding:12px 0 0}.portfolio-caption strong{font-size:18px;line-height:1.4;font-weight:600}.portfolio-caption small{font-size:12px;color:#70737a}
+.portfolio-page button:focus-visible{outline:3px solid #75233a;outline-offset:5px}
+.portfolio-review-pocket{position:relative;display:block;width:100%;margin:0;padding:40px 0 0;border:0;background:none;color:#292c30;text-align:left;cursor:pointer;font:inherit}
+.portfolio-paper-stack{position:absolute;inset:0 22px auto;height:110px;pointer-events:none;transition:transform .3s}
+.portfolio-paper-stack i{position:absolute;inset:8px 9px 0;background:#fff;border:1px solid #d7d4d1;border-radius:5px;box-shadow:0 -2px 10px #34343409;transform:rotate(-3deg)}
+.portfolio-paper-stack i:nth-child(2){inset:18px 0 0;transform:rotate(2deg)}.portfolio-paper-stack i:nth-child(3){inset:29px -8px 0;transform:rotate(-1deg)}
+.portfolio-pocket-face{position:relative;display:flex;flex-direction:column;gap:18px;padding:28px 26px 24px;background:linear-gradient(125deg,#faf9f7,#f0eeeb);border:1px solid #dedbd7;border-radius:6px;box-shadow:0 5px 16px #2727270b}
+.portfolio-pocket-face>svg{width:32px;height:27px;color:#75233a}.portfolio-pocket-face>strong{font-size:clamp(23px,2vw,29px);font-weight:600;line-height:1.25}.portfolio-pocket-face>span{font-size:15px;line-height:1.5}
+.portfolio-pocket-invitation{display:flex;justify-content:space-between;gap:10px;align-items:center;color:#75233a;border-top:1px solid #d7d2cd;padding-top:18px;margin-top:6px}.portfolio-pocket-invitation svg{width:22px}.portfolio-review-pocket:hover .portfolio-paper-stack{transform:translateY(-5px)}
+.portfolio-dialog{width:min(950px,calc(100% - 48px));max-height:calc(100dvh - 48px);padding:24px;border:1px solid #d6d7da;border-radius:9px;background:#fff;color:#292c30;box-sizing:border-box;overflow:auto}.portfolio-dialog::backdrop{background:#171a20ad}
+.portfolio-dialog-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:20px}.portfolio-dialog-heading h2{font-family:Manrope,sans-serif;font-size:26px;line-height:1.3;margin:0}
+.portfolio-close{flex-shrink:0;border:1px solid #d8d8db;border-radius:50%;background:white;width:44px;height:44px;font-size:28px;cursor:pointer;color:inherit}.portfolio-back{padding:0 0 12px;border:0;background:none;color:#75233a;font:inherit;cursor:pointer;min-height:44px}
+.portfolio-project-gallery figure{margin:0}.portfolio-main-photo{position:relative;background:#f8f8f8;border-radius:4px;overflow:hidden}.portfolio-main-photo>img{display:block;width:100%;height:min(57vh,560px);object-fit:contain}.portfolio-project-gallery figcaption{font-size:13px;color:#61646b;margin:10px 0;text-align:center}
+.portfolio-gallery-controls{display:flex;justify-content:center;align-items:center;gap:20px;margin:8px 0}.portfolio-gallery-controls button{width:44px;height:44px;border:1px solid #d4d5d8;border-radius:50%;background:white;cursor:pointer;color:#75233a;font-size:22px}
+.portfolio-thumbnails{display:flex;gap:10px;overflow-x:auto;padding:5px 4px 12px}.portfolio-thumbnails button{flex:0 0 110px;padding:4px;background:white;border:1px solid #dadbde;border-radius:5px;cursor:pointer;text-align:left;color:inherit}.portfolio-thumbnails button[aria-pressed=true]{border:2px solid #75233a;padding:3px}.portfolio-thumbnails img{width:100%;height:65px;object-fit:contain;display:block}.portfolio-thumbnails small{display:block;font-size:11px;line-height:1.4;margin-top:6px}
+.portfolio-origin-note{font-size:13px;line-height:1.6;color:#656970;margin:12px 0 0}
+.portfolio-review-files{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 18px;padding-top:12px}.portfolio-review-file{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:22px;background:#faf9f7;border:1px solid #d9d5d2;border-top:4px solid #75233a;border-radius:5px;text-align:left;font:inherit;color:inherit;cursor:pointer;box-shadow:0 5px 12px #25252509;transition:transform .25s}.portfolio-review-file:hover{transform:translateY(-4px)}.portfolio-review-file>svg{width:27px;height:26px;color:#75233a}.portfolio-review-file>strong{font-size:19px}.portfolio-review-file>span{font-size:15px;line-height:1.6}.portfolio-file-link{display:flex;align-items:center;gap:14px;color:#75233a;margin-top:auto;padding-top:6px}.portfolio-file-link svg{width:20px}
+.portfolio-video-file{position:relative;overflow:hidden;min-height:230px;color:white;background:#303235;justify-content:flex-end;isolation:isolate}.portfolio-video-file>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}.portfolio-video-file:after{content:'';position:absolute;inset:0;background:linear-gradient(transparent,#17191bd9);z-index:-1}.portfolio-video-file>svg{color:white;width:44px;height:44px}.portfolio-video-file .portfolio-file-link{color:white;margin:0}
+.portfolio-full-review{padding:24px 12px;max-width:670px;margin:auto}.portfolio-full-review>svg{width:36px;color:#75233a}.portfolio-full-review blockquote{font-size:clamp(20px,3vw,28px);line-height:1.6;margin:20px 0}.portfolio-full-review p{color:#75233a;font-weight:600}.portfolio-video{display:block;width:100%;max-height:65dvh;background:#202124}
+@media(max-width:1000px){.portfolio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.portfolio-heading p{max-width:300px;font-size:16px}}
+@media(max-width:640px){.journal-shell .portfolio-page{padding-block:24px 32px}.portfolio-heading{display:block;margin-bottom:22px}.portfolio-heading p{margin-top:14px;max-width:none}.portfolio-grid{display:block}.portfolio-entry{margin-bottom:24px}.portfolio-cover>img{max-height:none}.portfolio-caption strong{font-size:17px}.portfolio-dialog{width:calc(100% - 20px);max-height:calc(100dvh - 20px);padding:16px}.portfolio-dialog-heading{gap:12px;margin-bottom:14px}.portfolio-dialog-heading h2{font-size:22px}.portfolio-review-files{grid-template-columns:1fr;gap:20px}.portfolio-main-photo>img{height:auto;max-height:55dvh;object-fit:contain}.portfolio-full-review{padding:12px 0}.portfolio-review-pocket{max-width:400px;margin:auto}.portfolio-review-file{padding:20px}.portfolio-pocket-face{padding:26px}}
+@media(prefers-reduced-motion:reduce){.portfolio-page *{transition:none!important;scroll-behavior:auto!important}}
+.portfolio-review-file{position:relative;isolation:isolate}
+.portfolio-review-file:before{content:'';position:absolute;top:-12px;left:18px;width:64px;height:10px;background:#f0eeeb;border:1px solid #d9d5d2;border-bottom:0;border-radius:4px 4px 0 0;z-index:-1}
+.portfolio-review-files,.portfolio-full-review{animation:portfolio-reveal .25s ease-out}
+@keyframes portfolio-reveal{from{opacity:.45;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.portfolio-page *{animation:none!important}}
+.portfolio-dialog-heading>div{min-width:0}
+.portfolio-dialog-heading h2{overflow-wrap:anywhere}
+.portfolio-dialog-heading{position:sticky;top:-24px;background:white;z-index:2;padding-block:4px 12px}
+@media(max-width:640px){.portfolio-dialog-heading{top:-16px}}
+.portfolio-pocket-face>.portfolio-pocket-title{font-family:Manrope,sans-serif;font-size:clamp(27px,2.3vw,33px);line-height:1.18;font-weight:700;color:#75233a;letter-spacing:-.02em}
+.portfolio-pocket-face>.portfolio-pocket-invitation{font-size:16px;font-weight:600}

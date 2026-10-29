@@ -1,0 +1,89 @@
+/* Trial route /customers/pocket only. The original /customers page is preserved. */
+.customer-pocket-page{--pocket-wine:#6d2337;--pocket-paper:#fcfbfa;--pocket-silver:#cdd0d2;color:#292b2d}
+.journal-shell .customer-pocket-page .pilot-guide-heading{max-width:900px;margin-bottom:28px}.journal-shell .customer-pocket-page .pilot-guide-heading h1{font-size:clamp(30px,4vw,44px);margin-bottom:12px}.customer-pocket-page .pilot-guide-heading>p{font-size:16px;line-height:1.6;max-width:65ch}
+.customer-pocket{margin:0 0 28px}.pocket-shell{position:relative;isolation:isolate;padding-bottom:32px}
+.pocket-back{position:absolute;inset:22px 0 0;background:var(--pocket-wine);border:1px solid #8e5867;border-radius:5px;box-shadow:inset 0 3px 7px #2d0c163b;pointer-events:none;z-index:0}
+.pocket-tabs{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:16px 16px 0;align-items:start}
+.pocket-tabs>button{position:relative;height:76px;min-width:0;padding:13px 6px 32px;background:linear-gradient(#fff,#eeece9);color:#292b2d;border:1px solid var(--pocket-silver);border-radius:5px 5px 1px 1px;font-size:16px;line-height:1.4;box-shadow:0 2px 5px #20232612;transition:transform 280ms ease,background-color 280ms ease;z-index:1}
+.pocket-tabs>button[aria-expanded=true]{background:var(--pocket-wine);border-color:var(--pocket-wine);color:white;transform:translateY(-6px);z-index:5;border-bottom:0}
+.pocket-front{position:absolute;left:0;right:0;top:68px;height:52px;border:1px solid #a9808b;border-top:1px solid #e1d6d9;border-radius:4px;background:linear-gradient(#7c3347,#692335);box-shadow:0 -3px 6px #35111c18,inset 0 1px 1px #ffffff26;z-index:3;pointer-events:none}
+.pocket-panel-wrap{display:grid;grid-template-rows:0fr;position:relative;margin-top:-8px;z-index:4;transition:grid-template-rows 300ms ease}
+.customer-pocket.is-open .pocket-panel-wrap{grid-template-rows:1fr}
+.customer-pocket.is-open .pocket-shell{padding-bottom:8px}
+.pocket-panel-clip{min-height:0;overflow:hidden;visibility:hidden;transition:visibility 0s 300ms}
+.customer-pocket.is-open .pocket-panel-clip{visibility:visible;transition-delay:0s}
+.pocket-panel{position:relative;padding:24px 28px;background:var(--pocket-paper);border:1px solid var(--pocket-silver);border-radius:4px;box-shadow:0 5px 12px #20232610;min-width:0}
+.pocket-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.journal-shell .pocket-panel-heading h2{font:500 29px/1.25 var(--serif);letter-spacing:-.025em;margin:0}
+.pocket-collapse{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 8px;font-size:13px;border:1px solid #d9dcde;border-radius:3px;background:white;flex-shrink:0}.pocket-collapse span{font-size:23px;line-height:1}
+.pocket-topic-content{font-size:15px;line-height:1.6;animation:pocket-content-in 280ms ease}.pocket-topic-content p{font-size:15px;line-height:1.6;margin:0 0 12px}.pocket-topic-content .pocket-summary{font-size:16px;color:#51565a;margin-bottom:8px}
+.pocket-payment-stages{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:22px 0}.pocket-payment-stages>section+section{border-left:1px solid var(--pocket-silver);padding-left:24px}.pocket-topic-content h4{font:500 20px/1.3 var(--serif);margin:0 0 10px;color:var(--pocket-wine)}.pocket-payment-stages h4{font-size:24px}.pocket-payment-stages p{margin:0}
+.pocket-conditions{padding-left:20px;margin:16px 0}.pocket-conditions li{padding-left:4px;margin:6px 0;line-height:1.6}
+.pocket-delivery-conditions{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;margin:20px 0}.pocket-delivery-conditions section{border-top:1px solid var(--pocket-silver);padding-top:12px}.pocket-delivery-conditions h4{font-size:18px}.pocket-delivery-conditions p{margin:0}
+.pocket-subsections details,.pocket-order-list details{border-top:1px solid var(--pocket-silver)}.pocket-subsections details:last-child,.pocket-order-list li:last-child details{border-bottom:1px solid var(--pocket-silver)}
+.pocket-subsections summary,.pocket-order-list summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;padding:12px 0;cursor:pointer;list-style:none;font-size:15px;font-weight:500}.pocket-subsections summary::-webkit-details-marker,.pocket-order-list summary::-webkit-details-marker{display:none}.pocket-subsections summary span,.pocket-order-list summary span{font-size:22px;font-weight:400;color:var(--pocket-wine)}.pocket-subsections details[open]>summary span,.pocket-order-list details[open]>summary span{transform:rotate(45deg)}
+.pocket-order-list{padding:0;list-style:none;margin:18px 0}.pocket-subsections details>p:last-child,.pocket-order-list details>p:last-child{margin-bottom:16px}
+.pocket-rates{margin:4px 0 16px}.pocket-rates>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(100px,.45fr);gap:18px;border-top:1px solid #e1e2e3;padding:10px 0;font-size:14px;line-height:1.5}.pocket-rates dd{margin:0;color:#51565a}.pocket-rates dt{min-width:0}
+.pocket-warranty-fact{display:flex;gap:16px;align-items:baseline;margin:22px 0}.pocket-warranty-fact strong{font-size:30px;color:var(--pocket-wine);font-weight:500}.pocket-warranty-fact span{font-size:14px}.pocket-warranty-contact{border-top:1px solid var(--pocket-silver);padding-top:16px;margin-top:18px}
+.pocket-contact-row{border-top:1px solid var(--pocket-silver);margin-top:20px;padding-top:16px;display:flex;align-items:center;justify-content:space-between;gap:20px}.pocket-contact-row p{font-size:13px;color:#62686c;margin:0;max-width:58ch}.journal-shell .pocket-contact-row .button{background:var(--pocket-wine);border:1px solid var(--pocket-wine);color:white;border-radius:3px;min-height:44px;padding:9px 14px;gap:18px;font-size:14px;flex-shrink:0}
+.customer-pocket-page>.pilot-guide-aside{display:grid;grid-template-columns:1fr 1.5fr;gap:24px;margin:0 0 32px;align-items:start}.customer-pocket-page>.pilot-guide-aside .buyer-visual-note{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:0;border:0}.customer-pocket-page>.pilot-guide-aside .buyer-visual-note>img{width:160px;height:180px;object-fit:cover}.journal-shell .customer-pocket-page>.pilot-guide-aside h2{font-size:23px;margin:0 0 14px}.customer-pocket-page>.pilot-guide-aside .eyebrow{margin-bottom:10px}.customer-pocket-page>.pilot-guide-aside .approval-note{font-size:14px;margin:0;padding:16px;border:1px solid #d9dcde;background:#f8f6f3}
+.customer-pocket-page .pocket-tabs>button:focus-visible{outline:2px solid #9e4a63;outline-offset:3px}.customer-pocket-page .pocket-collapse:focus-visible,.customer-pocket-page .pocket-topic-content :is(button,summary):focus-visible{outline:2px solid var(--pocket-wine);outline-offset:3px}
+@keyframes pocket-content-in{from{opacity:.7;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:760px){.journal-shell .customer-pocket-page .pilot-guide-heading{margin-bottom:20px}.customer-pocket-page .pilot-guide-heading>p{font-size:15px}.pocket-tabs{padding:12px 8px 0;gap:4px}.pocket-tabs>button{height:68px;font-size:12.5px;padding:12px 0 28px}.pocket-front{top:57px;height:46px}.pocket-back{top:18px}.pocket-shell{padding-bottom:28px}.pocket-panel{padding:18px 16px}.pocket-panel-heading{gap:10px;margin-bottom:14px}.journal-shell .pocket-panel-heading h2{font-size:24px}.pocket-collapse{font-size:12px;gap:5px;padding-inline:7px}.pocket-payment-stages,.pocket-delivery-conditions{grid-template-columns:1fr;gap:14px;margin:18px 0}.pocket-payment-stages>section+section{border-left:0;border-top:1px solid var(--pocket-silver);padding-left:0;padding-top:16px}.pocket-payment-stages h4{font-size:22px}.pocket-topic-content,.pocket-topic-content p{font-size:15px}.pocket-rates>div{grid-template-columns:1fr;gap:5px}.pocket-contact-row{align-items:stretch;flex-direction:column;gap:14px}.pocket-contact-row .button{align-self:start}.pocket-warranty-fact{align-items:start;flex-direction:column;gap:4px}.customer-pocket-page>.pilot-guide-aside{grid-template-columns:1fr;gap:16px}.customer-pocket-page>.pilot-guide-aside .buyer-visual-note{grid-template-columns:110px 1fr;gap:12px}.customer-pocket-page>.pilot-guide-aside .buyer-visual-note>img{width:110px;height:160px}.journal-shell .customer-pocket-page>.pilot-guide-aside h2{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.customer-pocket *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Interior refinement, scoped to the trial page; outer pocket and ribbons unchanged. */
+.customer-pocket-page .pocket-panel{background:#fff}
+.customer-pocket-page .pocket-topic-content .editorial-icon{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;min-width:26px;padding:0;margin:0;background:none;border:0;border-radius:0;color:#42484d;flex-shrink:0;transform:none}
+.customer-pocket-page .pocket-topic-content .editorial-icon svg{width:24px;height:24px;display:block}
+.customer-pocket-page .pocket-topic-content h3{font:500 18px/1.4 var(--serif);letter-spacing:-.015em;margin:0 0 8px;color:#292b2d}
+.customer-pocket-page .pocket-payment-stages{gap:14px;margin:0 0 14px}
+.customer-pocket-page .pocket-payment-stages>section,.customer-pocket-page .pocket-delivery-conditions>section,.pocket-warranty-card{display:flex;align-items:flex-start;gap:12px;padding:16px;background:#f2f3f4;border:1px solid #e0e2e4;border-radius:4px;min-width:0}
+.customer-pocket-page .pocket-payment-stages>section+section{padding:16px;border:1px solid #e0e2e4}
+.customer-pocket-page .pocket-payment-stages p,.customer-pocket-page .pocket-delivery-conditions p,.pocket-warranty-card p{margin:0}
+.pocket-payment-services{padding:14px 16px;background:#f5f5f6;border:1px solid #e0e2e4;border-radius:4px}
+.pocket-payment-services .pocket-conditions{margin:6px 0 0;padding-left:18px}.pocket-payment-services .pocket-conditions li{margin:4px 0}
+.customer-pocket-page .pocket-delivery-conditions{margin:0 0 14px;gap:12px}
+.customer-pocket-page .pocket-subsections{display:grid;gap:10px}
+.customer-pocket-page .pocket-subsections details,.customer-pocket-page .pocket-order-list details,.pocket-guarantee-question{border:1px solid #d9dcdf;border-radius:4px;background:#f5f5f6;min-width:0;overflow:visible}
+.customer-pocket-page .pocket-order-list{display:grid;gap:8px;margin:14px 0 0}
+.customer-pocket-page .pocket-subsections summary,.customer-pocket-page .pocket-order-list summary,.pocket-guarantee-question summary{padding:12px 16px;gap:12px;min-height:50px;list-style:none;display:flex;align-items:center;cursor:pointer;font-size:15px;font-weight:500}
+.customer-pocket-page .pocket-summary-label{font-size:15px!important;color:#292b2d!important;font-weight:500;flex:1;min-width:0;transform:none!important}
+.customer-pocket-page .pocket-topic-content details[open]>summary .editorial-icon{transform:none}
+.customer-pocket-page .pocket-subsections details>p,.customer-pocket-page .pocket-order-list details>p,.pocket-guarantee-question>p{padding:0 16px;margin:0 0 14px}
+.customer-pocket-page .pocket-rates{margin:0 16px 14px}
+.pocket-disclosure-mark{width:18px;height:18px;min-width:18px;color:#6d2337;flex-shrink:0;margin-left:auto}
+.customer-pocket-page details[open]>summary .pocket-disclosure-mark path:last-child{opacity:0}
+.pocket-guarantee-question{margin-top:12px}.pocket-guarantee-question summary::-webkit-details-marker{display:none}
+.pocket-care-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 14px}
+.pocket-care-tiles button{position:relative;display:flex;align-items:center;gap:12px;text-align:left;min-height:84px;min-width:0;padding:14px;border:1px solid #d5d9dc;border-radius:4px;background:#fff;color:#292b2d;box-shadow:0 1px 2px #292b2d06}
+.pocket-care-tiles button>span:last-child{font-size:15px;line-height:1.45;font-weight:400;min-width:0;overflow-wrap:break-word}
+.pocket-care-tiles button[aria-pressed=true]{background:#eef0f2;border-color:#9c6878;box-shadow:inset 3px 0 #6d2337}
+.pocket-care-tiles button[aria-pressed=true] .editorial-icon{color:#6d2337}.pocket-care-tiles button[aria-pressed=true]>span:last-child{color:#6d2337;font-weight:500}
+.pocket-care-recommendation{padding:18px 20px;background:#eef0f2;border:1px solid #dce0e3;border-radius:4px;min-width:0}
+.customer-pocket-page .pocket-care-recommendation h3{font-size:20px;margin-bottom:10px}.customer-pocket-page .pocket-care-recommendation p{margin:0;max-width:95ch}
+.pocket-contact-row--action{justify-content:flex-start}.customer-pocket-page .pocket-contact-row{margin-top:16px;padding-top:14px}
+.customer-pocket-page .pocket-faq-board{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px;background:#eef0f2;border:1px solid #e1e3e5;border-radius:5px;align-items:start}
+.pocket-faq-column{display:flex;flex-direction:column;gap:12px;min-width:0}
+.customer-pocket-page .pocket-faq-card{border:1px solid #d4d8dc;border-radius:4px;background:white;box-shadow:0 1px 3px #20232607;margin:0;padding:0;min-width:0}
+.customer-pocket-page .pocket-faq-card summary{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;list-style:none;cursor:pointer;padding:16px 18px;font-size:15px;font-weight:500;line-height:1.5;min-height:0}
+.customer-pocket-page .pocket-faq-card summary::-webkit-details-marker{display:none}.pocket-faq-card summary>span{min-width:0}.pocket-faq-card summary .pocket-disclosure-mark{margin-top:3px}
+.customer-pocket-page .pocket-faq-card[open]>summary{color:#6d2337;padding-bottom:10px}
+.pocket-faq-answer{padding:0 18px 16px}.pocket-faq-answer p{font-size:15px;line-height:1.6;color:#565c61;margin:0}
+.customer-pocket-page .pocket-faq-card summary:focus-visible{outline:2px solid #6d2337;outline-offset:3px}
+@media(max-width:1000px) and (min-width:761px){.pocket-care-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.pocket-care-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pocket-care-tiles button{flex-direction:column;align-items:flex-start;gap:8px;min-height:100px;padding:12px}.pocket-care-tiles button>span:last-child{font-size:15px}.pocket-care-recommendation{padding:16px}.customer-pocket-page .pocket-care-recommendation h3{font-size:19px}.customer-pocket-page .pocket-payment-stages,.customer-pocket-page .pocket-delivery-conditions{grid-template-columns:1fr;gap:10px}.customer-pocket-page .pocket-payment-stages>section,.customer-pocket-page .pocket-payment-stages>section+section,.customer-pocket-page .pocket-delivery-conditions>section,.pocket-warranty-card{padding:14px;gap:10px}.customer-pocket-page .pocket-subsections summary,.customer-pocket-page .pocket-order-list summary,.pocket-guarantee-question summary{padding:12px;gap:10px}.customer-pocket-page .pocket-subsections details>p,.customer-pocket-page .pocket-order-list details>p,.pocket-guarantee-question>p{padding-inline:12px}.customer-pocket-page .pocket-rates{margin-inline:12px}.customer-pocket-page .pocket-faq-board{grid-template-columns:1fr;padding:12px;gap:12px}.customer-pocket-page .pocket-faq-card summary{padding:16px;font-size:15px;gap:12px}.pocket-faq-answer{padding:0 16px 16px}}
+@media(max-width:350px){.pocket-care-tiles{grid-template-columns:1fr}.pocket-care-tiles button{flex-direction:row;align-items:center;min-height:64px}}
+/* Order tab only: one ordered tile grid and one natural-height explanation. */
+.pocket-order-tiles{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.pocket-order-tiles>button{grid-column:span 3;display:flex;align-items:center;gap:12px;min-width:0;min-height:84px;padding:16px;border:1px solid #d5d9dc;border-radius:6px;background:white;text-align:left;color:#292b2d}
+.pocket-order-tiles>button:nth-child(n+5){grid-column:span 4}
+.pocket-order-tiles>button>span:last-child{min-width:0;font-size:15px;line-height:1.45;overflow-wrap:break-word}
+.pocket-order-tiles>button[aria-pressed=true]{background:#eef0f2;border-color:#b18a96;box-shadow:inset 3px 0 #6d2337}
+.customer-pocket-page .pocket-order-tiles>button[aria-pressed=true] .editorial-icon,.pocket-order-tiles>button[aria-pressed=true]>span:last-child{color:#6d2337}
+.pocket-order-tiles>button[aria-pressed=true]>span:last-child{font-weight:500}
+.customer-pocket-page .pocket-order-tiles>button:focus-visible{outline:2px solid #6d2337;outline-offset:4px}
+.pocket-order-explanation{padding:18px 20px;background:#eef0f2;border:1px solid #dce0e3;border-radius:6px;scroll-margin-block:16px;min-width:0}
+.customer-pocket-page .pocket-order-explanation h3{font-size:20px;margin:0 0 10px}
+.customer-pocket-page .pocket-order-explanation p{margin:0;max-width:100ch;font-size:15px;line-height:1.6}
+@media(hover:hover){.pocket-order-tiles>button:hover{background:#f5f6f7}.pocket-order-tiles>button[aria-pressed=true]:hover{background:#e8ebee}}
+@media(max-width:1100px){.pocket-order-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.pocket-order-tiles>button,.pocket-order-tiles>button:nth-child(n+5){grid-column:auto}}
+@media(max-width:600px){.pocket-order-tiles{grid-template-columns:1fr}.pocket-order-tiles>button{min-height:78px;padding:14px;gap:12px}.pocket-order-explanation{padding:16px}.customer-pocket-page .pocket-order-explanation h3{font-size:19px}}

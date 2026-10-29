@@ -1,0 +1,26 @@
+const {chromium}=require('C:/Users/izoto/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const base=process.env.QA_URL||'http://127.0.0.1:4173/walenza-website/';
+const out=path.resolve(__dirname,'../qa-output/about-editorial');fs.mkdirSync(out,{recursive:true});
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});const errors=[],sizes=[];
+try{
+ for(const width of [1440,1024,768,390,320]){
+  const p=await browser.newPage({viewport:{width,height:1000},hasTouch:width<=390,reducedMotion:'reduce'});p.on('pageerror',e=>errors.push(e.message));
+  await p.goto(base+'#/about');await p.locator('.salon-editorial-page').waitFor();await p.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.querySelectorAll('main img')].map(i=>{i.loading='eager';return i.decode()}))});
+  assert.equal(await p.locator('main h1').innerText(),'О салоне');assert.equal(await p.locator('.salon-editorial-heading>p').innerText(),'От первой идеи — до вашей мебели');
+  assert.equal(await p.locator('main details').count(),0);assert(!/19\s*лет|сертифика|наград|process-draft/.test(await p.locator('main').innerText()));
+  for(const [id,name] of [['anna','Анна Ярошинская'],['tatiana','Татьяна Комарова']]){const person=p.locator(`[data-person="${id}"]`);assert.equal(await person.locator('figcaption>span').innerText(),name);assert.equal(await person.locator('small').innerText(),'Руководитель салона');assert((await person.locator('img').getAttribute('src')).endsWith('/team/'+id+'.jpg'));const shape=await person.locator('img').boundingBox();assert(Math.abs(shape.width/shape.height-.8)<.01,'portrait proportion');}
+  const portraits=await p.locator('.salon-team-portraits figure').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));assert(Math.abs(portraits[0].top-portraits[1].top)<2);
+  assert.equal(await p.locator('.salon-factory-grid figure').count(),3);
+  const expected=['workshop','workshop-line','team-at-work'];for(let i=0;i<3;i++){const frame=p.locator('.salon-factory-grid figure').nth(i);assert((await frame.locator('img').getAttribute('src')).endsWith(expected[i]+'.png'));await frame.locator('button').focus();await p.keyboard.press('Enter');const modal=p.locator('.salon-photo-dialog[open]');await modal.waitFor();assert((await modal.locator(':scope > img').getAttribute('src')).endsWith(expected[i]+'.png'));await p.keyboard.press('Escape');assert(await frame.locator('button').evaluate(el=>el===document.activeElement));}
+  await p.locator('.salon-factory-grid button').first().click();const modal=p.locator('.salon-photo-dialog[open]'),seen=new Set();for(let i=0;i<5;i++){seen.add(await modal.locator(':scope > img').getAttribute('src'));await modal.getByRole('button',{name:'Следующее фото фабрики'}).click();}assert.equal(seen.size,5);assert((await modal.locator(':scope > img').getAttribute('src')).endsWith('workshop.png'));await modal.getByRole('button',{name:'Предыдущее фото фабрики'}).click();assert((await modal.locator(':scope > img').getAttribute('src')).endsWith('packed-parts.png'));await modal.getByRole('button',{name:'Следующее фото фабрики'}).focus();await p.keyboard.press('ArrowRight');assert((await modal.locator(':scope > img').getAttribute('src')).endsWith('workshop.png'));await p.keyboard.press('Escape');
+  assert.equal(await p.locator('.salon-invitation').count(),1);assert.equal(await p.locator('.salon-invitation h2').innerText(),'Есть идея для вашего интерьера?');await p.locator('.salon-invitation button').click();await p.locator('.contact-dialog[open]').waitFor();assert((await p.locator('.request-context').innerText()).includes('WALENZA'));await p.keyboard.press('Escape');
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'horizontal overflow');
+  assert.equal(await p.locator('.salon-order-link').count(),1);await p.locator('.salon-order-link').click();await p.locator('.customer-pocket').waitFor();assert(p.url().endsWith('/customers#order'));await p.goBack();await p.locator('.salon-editorial-page').waitFor();
+  await p.evaluate(async()=>{document.activeElement?.blur();await document.fonts.ready;await Promise.all([...document.querySelectorAll('main img')].map(i=>{i.loading='eager';return i.decode()}));document.querySelector('.salon-factory-grid').scrollLeft=0;window.scrollTo(0,0)});
+  sizes.push({width,contentHeight:await p.locator('.salon-editorial-page').evaluate(e=>e.getBoundingClientRect().height)});
+  if(width===1440||width===390)await p.screenshot({path:path.join(out,`about-${width}.png`),fullPage:true});
+  await p.close();console.log('PASS '+width+'px: names, roles, source images, proportions, gallery, keyboard/focus, CTA, order link, no overflow.');
+ }
+ const p=await browser.newPage();for(const route of ['kitchens','furniture','projects','materials']){await p.goto(base+'#/'+route);assert.equal(await p.locator('.salon-editorial-page').count(),0);}await p.close();assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'report.json'),JSON.stringify({sizes,errors},null,2));console.log('ALL PASS; about styles isolated.');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});

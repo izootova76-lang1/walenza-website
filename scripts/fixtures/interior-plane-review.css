@@ -1,0 +1,5 @@
+#plane-review-tools{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:9px 12px;background:#e7ebee;border-bottom:1px solid #cbd2d8;color:#34393e;font:13px/1.4 Arial,sans-serif}
+#plane-review-tools button,#plane-review-tools a{font:inherit;min-height:34px;padding:7px 10px;border:1px solid #c3cbd2;border-radius:4px;background:white;color:#34393e;text-decoration:none;cursor:pointer}
+#plane-review-tools button[aria-pressed=true]{background:#6d2337;border-color:#6d2337;color:white}
+#plane-review-tools>span{margin-right:8px}
+@media(max-width:760px){#plane-review-tools{gap:5px;font-size:12px;padding:7px}#plane-review-tools>span{flex-basis:100%;text-align:center;margin:0}}

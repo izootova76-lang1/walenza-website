@@ -1,0 +1,30 @@
+const {chromium}=require('C:/Users/izoto/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const fs=require('fs'),path=require('path'),assert=require('assert');const out=path.resolve('qa-output/customer-pocket');
+fs.mkdirSync(out,{recursive:true});const ids=['order','payment','delivery','warranty','care'];
+const normalize=s=>s.replace(/\s+/g,' ').trim();
+(async()=>{const b=await chromium.launch({headless:true,channel:'msedge'});const base=process.argv[2]||'http://127.0.0.1:4178/walenza-website/';const offline=base.startsWith('file:');const results=[];const p=await b.newPage();const errors=[];p.on('pageerror',e=>errors.push(e.message));
+const sourceTexts={};for(const id of ids){await p.goto(base+'#/customers#'+(id==='warranty'?'warranty-care':id));const panel=p.locator('.pilot-topic-panel:not([hidden])');await panel.waitFor();sourceTexts[id]=await panel.locator('p,dt,dd,.buyer-conditions li').allTextContents();}
+async function shot(name){
+ const sharp=require('C:/Users/izoto/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
+ await p.locator('.customer-pocket-page h1').click();
+ const height=await p.evaluate(()=>{const root=document.querySelector('.customer-pocket-page').getBoundingClientRect(),r=document.querySelector('.customer-pocket').getBoundingClientRect();return Math.ceil(r.bottom-root.top+8)});
+ const buffer=await p.locator('.customer-pocket-page').screenshot();const meta=await sharp(buffer).metadata();
+ await sharp(buffer).extract({left:0,top:0,width:meta.width,height:Math.min(meta.height,height)}).png().toFile(path.join(out,name+'.png'));
+}
+for(const width of [360,390,768,1440]){await p.setViewportSize({width,height:900});await p.goto(base+'#/customers/pocket');await p.locator('.customer-pocket').waitFor();await p.evaluate(()=>document.fonts.ready);const pocket=p.locator('.customer-pocket'),clip=p.locator('.pocket-panel-clip');const next=p.locator('.customer-pocket-page>.pilot-guide-aside');
+assert.equal(await pocket.locator('.pocket-tabs button').count(),5);assert.equal(await pocket.locator('button[aria-expanded=true]').count(),0);assert(await clip.evaluate(e=>e.inert));
+const closedNext=await next.evaluate(e=>e.getBoundingClientRect().top+scrollY);const closedHeight=await pocket.evaluate(e=>e.getBoundingClientRect().height);
+await p.locator('#pocket-tab-care').focus();await p.keyboard.press('Tab');assert.equal(await p.evaluate(()=>!!document.activeElement.closest('.pocket-panel-clip')),false);
+assert(await pocket.locator('.pocket-tabs button').evaluateAll(es=>es.every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.height>=44&&e.scrollWidth<=e.clientWidth+1})));
+if([390,1440].includes(width))await shot('closed-'+width);
+const heights={};for(const id of ids){await p.locator('#pocket-tab-'+id).click();await p.waitForTimeout(340);assert.equal(await pocket.locator('button[aria-expanded=true]').count(),1);assert.equal(await clip.evaluate(e=>e.inert),false);const panelText=normalize(await p.locator('#customer-pocket-panel').textContent());for(const text of sourceTexts[id]){if(normalize(text))assert(panelText.includes(normalize(text)),`Missing existing text (${id}): ${text}`);}
+const content=p.locator('.pocket-topic-content');await content.locator('details').evaluateAll(es=>es.forEach(e=>e.open=true));heights[id]=await pocket.evaluate(e=>e.getBoundingClientRect().height);
+assert.equal(await p.locator('#customer-pocket-panel').count(),1);assert(await pocket.evaluate(e=>{const tab=e.querySelector('[aria-expanded=true]').getBoundingClientRect(),panel=e.querySelector('.pocket-panel').getBoundingClientRect();return tab.bottom>=panel.top-1}));
+if(id==='order')assert.equal(await content.locator('details').count(),7);if(id==='care')assert.equal(await content.locator('details').count(),8);if(id==='delivery')assert.equal(await content.locator('.pocket-rates>div').count(),45);
+if(id==='payment'){const column=await p.locator('.pocket-payment-stages>section').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().x));assert(width<=760?Math.abs(column[0]-column[1])<1:column[1]>column[0]);if([390,1440].includes(width))await shot('payment-'+width);const shifted=await next.evaluate(e=>e.getBoundingClientRect().top+scrollY);assert(shifted>closedNext+200);}
+assert(await next.evaluate(e=>e.getBoundingClientRect().top>=document.querySelector('.customer-pocket').getBoundingClientRect().bottom-1));assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));}
+const longest=Object.keys(heights).sort((a,c)=>heights[c]-heights[a])[0];assert.equal(longest,'delivery');await p.locator('#pocket-tab-'+longest).click();await p.locator('.pocket-topic-content details').evaluateAll(es=>es.forEach(e=>e.open=true));await p.waitForTimeout(340);if([390,1440].includes(width))await shot('longest-'+width);
+await p.locator('.pocket-contact-row button').click();assert((await p.locator('dialog[open]').innerText()).includes('Вопрос об условиях заказа: доставка'));await p.keyboard.press('Escape');await p.locator('.pocket-collapse').click();assert(await clip.evaluate(e=>e.inert));await p.waitForTimeout(340);assert.equal(await p.evaluate(()=>document.activeElement.id),'pocket-tab-delivery');assert(Math.abs(await pocket.evaluate(e=>e.getBoundingClientRect().height)-closedHeight)<2);
+results.push({width,closedHeight,heights,longest,allExistingTextsPreserved:true,allTabsVisible:true,nextBlockMoves:true,collapsedContentInert:true});}
+await p.emulateMedia({reducedMotion:'reduce'});await p.goto(base+'#/customers/pocket#payment');await p.locator('#pocket-tab-payment[aria-expanded=true]').waitFor();assert.equal(await p.locator('.pocket-panel-wrap').evaluate(e=>getComputedStyle(e).transitionDuration),'0s');await p.locator('.pocket-collapse').click();assert(await p.locator('.pocket-panel-clip').evaluate(e=>e.inert));
+assert.equal(errors.length,0,errors.join('\n'));fs.writeFileSync(path.join(out,`checks${offline?'-offline':''}.json`),JSON.stringify(results,null,2));console.log(JSON.stringify(results,null,2));await b.close();})().catch(e=>{console.error(e);process.exit(1)});

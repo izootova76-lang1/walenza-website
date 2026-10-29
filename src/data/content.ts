@@ -13,7 +13,7 @@ export type ContactIntent = { kind: 'request' | 'visit' | 'director' | 'max' | '
 export type OpenContact = (intent?: ContactIntent) => void;
 export const navigation = [
  { path: '/', label: 'Главная' }, { path: '/kitchens', label: 'Кухни' }, { path: '/furniture', label: 'Шкафы и мебель' },
- { path: '/projects', label: 'Проекты' }, { path: '/materials', label: 'Материалы' }, { path: '/customers', label: 'Покупателям' },
+ { path: '/projects', label: 'Портфолио' }, { path: '/materials', label: 'Материалы' }, { path: '/customers', label: 'Покупателям' },
  { path: '/promotions', label: 'Акции' }, { path: '/about', label: 'О салоне' }, { path: '/contacts', label: 'Контакты' },
 ];
 export const primaryNavigation = navigation.filter(item => !['/', '/promotions', '/about'].includes(item.path));
@@ -31,7 +31,7 @@ const photographedModel = (id: string, title: string, layout: Layout, groups: st
  customization: 'Размеры, материалы и наполнение подбираются при обсуждении индивидуального проекта.',
  additionalImages: additional.map(name => ({ image: assetUrl(`/images/kitchens/${name}.jpg`), alt: `Кухня «${title}»: детали предоставленного изображения` })),
 });
-export const models: Model[] = [
+const sourceModels: Model[] = [
  photographedModel('terracotta', 'Терракота', 'corner', ['top', 'character'], 'Графитовые плоскости, выразительный фартук и тёплые акценты обеденной зоны', ['terracotta-details', 'terracotta-triptych']),
  photographedModel('olive', 'Олива', 'u', ['top', 'neoclassic', 'classic'], 'Приглушённый зелёный, рамочные фасады и светлая рабочая поверхность', ['olive-details']),
  photographedModel('oak-room', 'Дубрава', 'corner', ['top', 'wood', 'art-deco'], 'Древесный рисунок, рифлёный акцент и высокая стеклянная витрина'),
@@ -46,7 +46,14 @@ export const models: Model[] = [
  model('scandinavia', 'Скандинавия', 'corner', null, ['top', 'wood'], 'Древесный рисунок, светлые поверхности и выразительный фартук', 'МДФ, облицованная с двух сторон пластиком ETERNO', 'Палитра производителя; в описании указано несколько коллекций'),
  model('verona', 'Верона', 'straight', false, ['neoclassic', 'classic'], 'Фигурные рамочные фасады в глубоком цвете и светлые верхние шкафы', 'МДФ 22 мм с фигурной фрезеровкой, покрытие матовой эмалью'),
 
+ // User confirmed this photograph and its separate island on 28 October.
+ // Neutral working caption; direction and technical specification are not assigned.
+ { ...photographedModel('island-kitchen', 'Кухня с островом', 'straight', [], 'Композиция с отдельным островом. Реальная кухня WALENZA, фотография предоставлена заказчиком.'), island: true, sourceLabel: 'Фотография реальной кухни WALENZA. Наличие отдельного острова подтверждено заказчиком.' },
+
 ];
+// Approved list supplied by the client, 26 October. Missing models are not fabricated.
+export const approvedTopModelNames = ['Риф', 'Дюна', 'Бруклин', 'Градини', 'Флирт', 'Амаретто'];
+export const models: Model[] = sourceModels.map(item => ({ ...item, collections: [...item.collections.filter(id => id !== 'top'), ...(approvedTopModelNames.includes(item.title) ? ['top'] : [])] }));
 export function selectCatalogModels(groupId: string, source: readonly Model[] = models): Model[] {
  return source.filter(item => item.catalogGroupId === groupId);
 }
@@ -80,26 +87,27 @@ export const steps = [
 ];
 export const buyerTopics = [
  { id: 'order', title: 'Как заказать', summary: 'Семь этапов — от консультации до установки.', text: 'Обсудим идею, согласуем проект и материалы, затем пройдём путь изготовления и установки.' },
- { id: 'payment', title: 'Оплата', summary: 'Предоплата от 30% и порядок расчётов по договору.', text: 'Условия оплаты из брифа салона — для предварительного согласования.' },
- { id: 'delivery', title: 'Сроки, доставка и монтаж', summary: 'Ориентир изготовления — 21–45 рабочих дней.', text: 'Сроки и услуги согласовываются для конкретного проекта.' },
- { id: 'warranty-care', title: 'Гарантия', summary: 'Гарантия и срок службы — в деталях.', text: 'Условия для выбранной мебели уточняются при оформлении заказа.' },
+ { id: 'payment', title: 'Оплата', summary: 'Порядок расчётов фиксируется в договоре.', text: 'Размер предоплаты и сроки платежей согласовываются для конкретного заказа.' },
+ { id: 'delivery', title: 'Сроки, доставка и монтаж', summary: 'Изготовление — от 21 рабочего дня, в зависимости от материала.', text: 'Точный срок изготовления фиксируется в договоре. Дату и время доставки согласовываем с клиентом индивидуально.' },
+ { id: 'warranty-care', title: 'Гарантия', summary: 'Гарантия на мебель — 24 месяца.', text: 'Подробные условия для выбранной мебели фиксируются при оформлении заказа.' },
  { id: 'care', title: 'Уход', summary: 'Простые привычки для вашей мебели.', text: 'Рекомендации зависят от выбранных материалов.' },
 ];
 export const faq = [
- { id: 'timing', question: 'Сколько времени изготавливается мебель?', answer: 'Ориентировочно 21–45 рабочих дней. Точный срок зависит от проекта и фиксируется в договоре.', demo: false },
+ { id: 'timing', question: 'Сколько времени изготавливается мебель?', answer: 'От 21 рабочего дня. Срок зависит от материала и особенностей проекта; точный срок фиксируется в договоре.', demo: false },
  { id: 'remote', question: 'Можно ли обсудить проект дистанционно?', answer: 'Да, предварительный проект можно обсудить дистанционно. Удобный формат и необходимые материалы согласуйте с командой салона.', demo: false },
  { id: 'dimensions', question: 'Можно ли изготовить мебель по нестандартным размерам?', answer: 'Салон работает с индивидуальными проектами. Размеры и техническую возможность исполнения конкретного изделия уточняем после обсуждения и замера.', demo: false },
  { id: 'estimate', question: 'Как рассчитывается стоимость?', answer: 'Индивидуально, с учётом размеров, материалов и комплектации. Доставка, подъём и монтаж согласовываются отдельно; окончательная стоимость фиксируется при оформлении заказа.', demo: false },
  { id: 'facades', question: 'Какие варианты фасадов существуют?', answer: 'В предоставленном списке есть МДФ в плёнке ПВХ, матовая и глянцевая эмаль, пластик, шпон и мультишпон. Конкретные серии, декоры и применение к выбранной модели обсуждаются отдельно.', demo: false },
  { id: 'hardware', question: 'Можно ли выбрать фурнитуру?', answer: 'В перечне салона представлены Blum и Boyard. Подходящие механизмы и комплектацию подбираем под конкретный проект.', demo: false },
- { id: 'installation', question: 'Как организованы доставка и монтаж?', answer: 'Дату доставки и время монтажа согласовываем с клиентом. Стоимость услуг определяется отдельно. После установки проводится приёмка выполненных работ.', demo: false },
- { id: 'warranty', question: 'Какой гарантийный срок?', answer: 'По информации салона — 2 года на мебель. Условия и применимость к конкретному изделию уточняются при оформлении договора. Заявленный срок службы более 15 лет не является гарантийным сроком.', demo: false },
+ { id: 'installation', question: 'Как организованы доставка и монтаж?', answer: 'Дата и время доставки согласовываются индивидуально. В районе Косино, Выхино и Люберец доставка и занос стоят 6 000 ₽. Для других районов стоимость рассчитывается с учётом расстояния от склада в Раменском. Подъём и монтаж согласовываются с учётом условий заказа. После установки проводится приёмка выполненных работ.', demo: false },
+ { id: 'warranty', question: 'Какой гарантийный срок?', answer: 'Гарантия на мебель — 24 месяца. Подробные условия для конкретного изделия фиксируются при оформлении договора.', demo: false },
  { id: 'care', question: 'Как правильно ухаживать за фасадами и столешницами?', answer: 'Уход зависит от поверхности. Используйте мягкую ткань, своевременно удаляйте влагу и применяйте подходящие для выбранного материала средства с учётом рекомендаций изготовителя.', demo: false },
  { id: 'designer', question: 'Можно ли заказать мебель по проекту дизайнера?', answer: 'Передайте проект команде салона: обсудим задачу, материалы и возможность изготовления. Технические решения и условия требуют индивидуального согласования.', demo: false },
 ];
 export const contacts = {
  phone: '+7 (985) 205-02-12', phoneHref: 'tel:+79852050212', extraPhone: '+7 (926) 336-44-06', extraPhoneHref: 'tel:+79263364406',
  address: 'Москва, Новоухтомское шоссе, д. 2А, ТЦ «Город Косино», 3-й этаж', hours: '10:00–22:00', region: 'Москва и Московская область', director: 'Анна Ярошинская', salonName: 'Walenza мебель', landmarks: 'Ориентиры: «Интерьер Холл» и «Мебель Рум»', emails: ['adorisanna@mail.ru', 'mxralex24@mail.ru'],
+ vkUrl: 'https://vk.com/walenzamebel', mapUrl: 'https://yandex.ru/maps/org/walenza/95327657475/', mapRouteUrl: 'https://yandex.ru/maps/?rtext=~55.713090%2C37.845917&rtt=auto&ruri=~ymapsbm1%3A%2F%2Forg%3Foid%3D95327657475', mapWidgetUrl: 'https://yandex.ru/map-widget/v1/?mode=search&oid=95327657475&ol=biz&lang=ru_RU&z=16',
  maxUrl: null, telegramUrl: null, directorUrl: null, aiUrl: null,
 };
 export const furnitureDirections = [

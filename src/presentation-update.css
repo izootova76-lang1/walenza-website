@@ -1,0 +1,147 @@
+/* 27 October: existing routes and data, revised presentation of storage, buyers and projects. */
+.journal-shell { --presentation-radius: 14px; }
+.journal-shell .button:not(.light) { background: var(--accent); border-color: var(--accent); border-radius: 999px; }
+.journal-shell .button > .arrow { border: 0; }
+.journal-shell .compact-photo-dialog { border-radius: var(--presentation-radius); }
+.journal-shell .compact-photo-controls button { border-radius: 50%; }
+.journal-shell .compact-enlarge { border-radius: 50%; }
+
+/* Storage: heading and controls ahead of the photography, no duplicate hero image. */
+.storage-compact-heading { margin-bottom: 18px; }
+.storage-compact-heading h1 { font-size: clamp(32px,3.6vw,48px); margin-bottom: 10px; }
+.storage-compact-heading p { margin: 0; color: var(--muted); }
+.journal-shell .furniture-page .storage-navigation { background: none; border: 0; padding: 0; margin: 0 0 12px; }
+.journal-shell .furniture-page .storage-review-note { font-size: 13px; margin: 12px 0 20px; }
+.journal-shell .furniture-page .storage-section { padding-block: 12px 28px; }
+.furniture-page #wardrobes > .section-heading { display: none; }
+.journal-shell .wardrobe-category-switch { margin-bottom: 18px; }
+.journal-shell .wardrobe-category-switch a { border-radius: 999px; }
+.journal-shell .wardrobe-category-switch a[aria-current] { background: var(--accent); border-color: var(--accent); }
+.journal-shell .storage-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.journal-shell .storage-card.compact-storage-sample { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 22px; padding: 12px; border-radius: var(--presentation-radius); box-shadow: 0 3px 12px #20232607; align-items: center; }
+.journal-shell .compact-storage-media { width: 100%; max-width: none; }
+.compact-storage-photo { aspect-ratio: 3/4; width: 100%; }
+.journal-shell .compact-storage-sample .compact-storage-image { height: 100%; aspect-ratio: 3/4; border-radius: 12px; }
+.journal-shell .compact-storage-sample .compact-storage-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
+.journal-shell .compact-storage-copy h3 { font-size: clamp(25px,2.4vw,34px); margin: 0 0 14px; }
+.compact-storage-copy { min-width: 0; padding-right: 8px; }
+.storage-view-copy { display: grid; margin-bottom: 20px; }
+.storage-view-copy > p { grid-area: 1/1; margin: 0; font-size: 16px; line-height: 1.6; }
+.storage-view-copy > p[aria-hidden=true] { visibility: hidden; }
+.journal-shell .compact-storage-sample .compact-storage-switch { display: inline-flex; gap: 0; padding: 3px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); margin: 0 0 22px; max-width: 100%; }
+.journal-shell .compact-storage-sample .compact-storage-switch button { font-size: 14px; min-height: 44px; padding: 8px 14px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); white-space: nowrap; }
+.journal-shell .compact-storage-sample .compact-storage-switch button[aria-pressed=true] { background: var(--accent); color: white; }
+.compact-storage-copy .storage-extra { font-size: 14px; }
+.journal-shell .compact-storage-copy .compact-request { min-height: 46px; font-size: 15px; padding: 10px 16px; gap: 12px; }
+.journal-shell .storage-grid--dressing { grid-template-columns: minmax(0,1fr); }
+.journal-shell .storage-grid--dressing .compact-storage-sample { grid-template-columns: minmax(0,1.8fr) minmax(0,1fr); gap: 28px; }
+.is-dressing .compact-storage-media { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.7fr); gap: 14px; align-items: start; max-width: 720px; }
+.dressing-paired-preview { display: block; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font-size: 14px; cursor: pointer; }
+.dressing-paired-preview img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.dressing-paired-preview span { display: block; margin-top: 8px; }
+
+/* Five independently constructed matte pockets. Decorative layers never intercept input. */
+.journal-shell .customer-pocket-page .pilot-guide-heading { max-width: none; margin-bottom: 0; padding: 26px 24px 14px; border-radius: 16px 16px 0 0; background: var(--ink); color: white; text-align: center; }
+.customer-pocket-page .pilot-guide-heading > p { margin: 0 auto; color: #e3e5e6; }
+.customer-pocket-page .customer-pocket { --pocket-wine: var(--accent); background: var(--ink); border-radius: 0 0 16px 16px; padding: 4px 24px 24px; margin-bottom: 32px; }
+.customer-pocket-page .pocket-shell,.customer-pocket-page .customer-pocket.is-open .pocket-shell { padding-bottom: 0; }
+.customer-pocket-page .pocket-tabs { gap: 16px; padding: 10px 2px 6px; }
+.customer-pocket-page .pocket-tabs > button { display: block; position: relative; height: 154px; padding: 0; background: none; border: 0; border-radius: 14px; box-shadow: none; color: var(--ink); transform: none; transition: none; isolation: isolate; }
+.customer-pocket-page .pocket-tabs > button[aria-expanded=true] { color: white; transform: none; background: none; border: 0; }
+.pocket-folder-back,.pocket-folder-cards,.pocket-folder-front { position: absolute; pointer-events: none; }
+.pocket-folder-back { inset: 14px 1px 0; background: #e5e6e7; border: 1px solid #d3d5d7; border-radius: 12px; z-index: 0; }
+.pocket-folder-back::before { content: ''; position: absolute; right: 12px; top: -11px; width: 30%; height: 18px; border-radius: 9px 9px 0 0; background: inherit; border: inherit; border-bottom: 0; }
+.pocket-folder-cards { inset: 9px 16px 18px; z-index: 1; transition: transform 280ms ease; }
+.pocket-folder-cards > span { position: absolute; inset: 0; display: block; border: 1px solid #d7d9dc; background: #fff; border-radius: 8px 8px 0 0; box-shadow: 0 -1px 3px #0000000b; }
+.pocket-folder-cards > span:nth-child(1) { transform: rotate(2deg); top: 0; }
+.pocket-folder-cards > span:nth-child(2) { top: 7px; left: -4px; right: 2px; transform: rotate(-1deg); background: #f0f1f2; }
+.pocket-folder-cards > span:nth-child(3) { top: 14px; left: -8px; right: 5px; background: #fff; }
+.pocket-folder-front { inset: 32px 0 0; z-index: 2; border: 1px solid #d7d9dc; border-radius: 14px; background: #f5f6f6; box-shadow: inset 0 1px 0 #fff,0 4px 8px #00000016; }
+.pocket-folder-label { position: absolute; z-index: 3; inset: 42px 12px 12px; display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 17px; font-weight: 500; line-height: 1.4; }
+.pocket-folder-label .editorial-icon { flex: 0 0 28px; width: 28px; height: 28px; border: 0; padding: 0; margin: 0; background: none; color: inherit; }
+.pocket-folder-label .editorial-icon svg { display: block; width: 28px; height: 28px; }
+.pocket-tabs > button[aria-expanded=true] .pocket-folder-front,.pocket-tabs > button[aria-expanded=true] .pocket-folder-back { background: var(--accent); border-color: #9b596b; box-shadow: inset 0 1px 0 #ffffff18,0 4px 8px #00000016; }
+.pocket-tabs > button[aria-expanded=true] .pocket-folder-cards { transform: translateY(-6px); }
+.customer-pocket-page .pocket-panel-wrap { margin-top: 16px; }
+.customer-pocket-page .pocket-panel { border-radius: 14px; padding: 24px; }
+.customer-pocket-page .pocket-tabs > button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+@media(hover:hover) { .pocket-tabs > button:hover .pocket-folder-cards { transform: translateY(-6px); } }
+
+/* Real projects only: a single order occupies the whole available composition. */
+.projects-compact-heading { margin-bottom: 24px; }
+.projects-compact-heading h1 { font-size: clamp(34px,4vw,52px); margin: 0 0 10px; }
+.projects-compact-heading p { margin: 0; color: var(--muted); font-size: 19px; }
+.project-preview-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.project-preview-grid.is-single { grid-template-columns: minmax(0,1fr); }
+.project-preview-card { border: 1px solid var(--border); border-radius: var(--presentation-radius); padding: 12px; box-shadow: 0 3px 12px #20232607; background: #fff; min-width: 0; }
+.is-single .project-preview-card { display: grid; grid-template-columns: minmax(0,430px) minmax(0,1fr); gap: 28px; align-items: center; }
+.project-preview-photo { display: block; position: relative; width: fit-content; max-width: 100%; }
+.project-preview-photo > img { display: block; width: auto; height: auto; max-width: 100%; max-height: 470px; border-radius: 12px; }
+.project-preview-open { position: absolute; bottom: 12px; right: 12px; width: 46px; height: 46px; border-radius: 50%; background: var(--accent); color: white; display: grid; place-items: center; }
+.project-preview-copy { padding: 18px 12px; min-width: 0; }
+.journal-shell .project-preview-copy h2 { font-size: clamp(25px,2.6vw,34px); margin-bottom: 12px; }
+.project-preview-copy p { color: var(--muted); margin: 0 0 22px; }
+.project-preview-thumbnails { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.project-preview-thumbnails button { width: 92px; height: 74px; border-radius: 10px; border: 1px solid var(--border); padding: 3px; background: white; cursor: pointer; }
+.project-preview-thumbnails img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 7px; }
+.project-preview-thumbnails button[aria-pressed=true] { border: 2px solid var(--accent); }
+.journal-shell .project-video-compact { display: grid; grid-template-columns: minmax(0,132px) minmax(0,1fr); align-items: center; gap: 24px; padding: 12px; border: 1px solid var(--border); border-radius: var(--presentation-radius); margin: 18px 0 28px; background: white; }
+.journal-shell .project-video-compact video { display: block; width: 100%; height: auto; border-radius: 10px; background: var(--ink); }
+.journal-shell .project-video-compact h2 { font-size: 24px; margin: 0 0 10px; }
+.project-video-compact p { margin: 0; color: var(--muted); font-size: 16px; }
+
+/* Reviews share one shallow pocket. Scroll is local, and longer text grows naturally. */
+.customer-reviews-shelf { background: var(--ink); color: white; border-radius: 16px; padding: 28px 20px 20px; margin-top: 28px; }
+.journal-shell .customer-reviews-shelf h2 { font-size: clamp(28px,3vw,40px); margin: 0 8px 18px; }
+.customer-review-window { position: relative; padding: 8px 8px 36px; }
+.customer-review-track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; align-items: stretch; position: relative; }
+.customer-review-track::-webkit-scrollbar { display: none; }
+.customer-review-card { box-sizing: border-box; flex: 0 0 calc((100% - 36px)/3); min-width: 0; padding: 20px 24px 32px; border: 1px solid var(--border); border-radius: 14px; background: white; color: var(--ink); scroll-snap-align: start; }
+.customer-review-quote { display: block; font-family: var(--serif); color: var(--accent); font-size: 42px; height: 34px; line-height: 1; font-weight: 700; }
+.customer-review-card blockquote { font-size: 17px; line-height: 1.6; margin: 8px 0 20px; overflow-wrap: anywhere; }
+.customer-review-card p { color: var(--accent); font-size: 17px; margin: 0; font-weight: 600; }
+.customer-review-pocket-edge { position: absolute; bottom: 0; left: 0; right: 0; height: 44px; border: 1px solid #995267; border-radius: 12px 12px 10px 10px; background: var(--accent); box-shadow: inset 0 1px 0 #ffffff18,0 4px 7px #00000012; pointer-events: none; }
+.customer-review-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; }
+.customer-review-controls > button { width: 44px; height: 44px; border-radius: 50%; background: white; color: var(--accent); border: 1px solid var(--border); font-size: 22px; cursor: pointer; }
+.customer-review-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; }
+.customer-review-dots button { display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 0; background: transparent; border: 0; cursor: pointer; }
+.customer-review-dots span { width: 7px; height: 7px; border-radius: 50%; background: #ffffff75; }
+.customer-review-dots button[aria-pressed=true] span { background: white; width: 10px; height: 10px; }
+.customer-reviews-shelf :is(button,[tabindex]):focus-visible { outline: 3px solid white; outline-offset: 3px; }
+@media(max-width:1100px) {
+ .journal-shell .storage-grid { grid-template-columns: minmax(0,1fr); }
+ .journal-shell .storage-card.compact-storage-sample { grid-template-columns: minmax(0,.85fr) minmax(0,1fr); max-width: none; }
+ .compact-storage-media { justify-self: start; }
+ .compact-storage-photo { max-width: 340px; }
+ .journal-shell .storage-grid--dressing .compact-storage-sample { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); }
+ .pocket-folder-label { flex-direction: column; gap: 10px; font-size: 16px; }
+}
+@media(max-width:700px) {
+ .journal-shell .storage-card.compact-storage-sample,.journal-shell .storage-grid--dressing .compact-storage-sample { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 12px; }
+ .compact-storage-photo { max-width: 300px; margin-inline: auto; }
+ .compact-storage-copy { padding: 0 4px 4px; }
+ .journal-shell .compact-storage-copy h3 { font-size: 27px; }
+ .is-dressing .compact-storage-media { grid-template-columns: minmax(0,1fr) minmax(0,.55fr); gap: 10px; }
+ .storage-view-copy { margin-bottom: 16px; }
+ .journal-shell .compact-storage-sample .compact-storage-switch { margin-bottom: 18px; }
+ .customer-pocket-page .customer-pocket { padding: 4px 12px 16px; }
+ .journal-shell .customer-pocket-page .pilot-guide-heading { padding: 22px 16px 12px; }
+ .customer-pocket-page .pocket-tabs { display: flex; overflow-x: auto; gap: 12px; padding: 12px 4px 8px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #9ca0a3 transparent; }
+ .customer-pocket-page .pocket-tabs > button { flex: 0 0 148px; height: 142px; scroll-snap-align: start; }
+ .pocket-folder-label { font-size: 16px; }
+ .customer-pocket-page .pocket-panel { padding: 18px 14px; }
+ .project-preview-grid { grid-template-columns: minmax(0,1fr); }
+ .is-single .project-preview-card { grid-template-columns: minmax(0,1fr); gap: 0; }
+ .project-preview-photo { margin-inline: auto; }
+ .project-preview-photo > img { max-height: 420px; }
+ .project-preview-copy { padding: 18px 4px 6px; }
+ .project-preview-copy p { margin-bottom: 16px; }
+ .project-preview-thumbnails { gap: 10px; margin-bottom: 12px; }
+ .project-preview-thumbnails button { width: 82px; height: 68px; }
+ .journal-shell .project-video-compact { grid-template-columns: minmax(0,110px) minmax(0,1fr); gap: 14px; padding: 12px; }
+ .journal-shell .project-video-compact h2 { font-size: 23px; }
+ .customer-reviews-shelf { padding: 24px 10px 18px; }
+ .customer-review-window { padding-inline: 4px; }
+ .customer-review-card { flex-basis: 100%; padding: 18px 20px 32px; }
+}
+@media(prefers-reduced-motion:reduce) { .pocket-folder-cards,.customer-review-track { transition: none!important; scroll-behavior: auto!important; } }

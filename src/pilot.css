@@ -1,0 +1,311 @@
+@font-face { font-family: 'Walenza Prata'; src: url('/fonts/Prata-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Walenza Golos'; src: url('/fonts/GolosText-Variable.ttf') format('truetype'); font-style: normal; font-weight: 400 900; font-display: swap; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.pilot-shell { --ink: #282a2a; --green: #303333; --paper: #fff; --muted: #65696a; --border: #dedfdd; --surface: #f4f4f2; --surface-white: #fff; --serif: 'Walenza Prata', Georgia, serif; --editorial-accent: #9d5b43; --editorial-sage: #ededeb; --editorial-cream: #f5f5f3; font-family: 'Walenza Golos', Arial, sans-serif; background: white; color: var(--ink); min-height: 100vh; }
+.pilot-shell button, .pilot-shell select { font-family: inherit; }
+.pilot-shell h1, .pilot-shell h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -.035em; }
+.pilot-shell h3 { font-family: 'Walenza Golos', Arial, sans-serif; }
+.pilot-shell .button { background: #303333; border-color: #303333; border-radius: 2px; box-shadow: none; font-weight: 500; }
+.pilot-shell .button:hover { background: #151717; }
+.pilot-shell .button > span:last-child { border: 0; border-radius: 0; }
+.pilot-shell .button.light { background: white; color: #303333; border-color: white; }
+.pilot-shell .eyebrow { font-size: 11px; color: #6b6d6c; letter-spacing: .11em; }
+.pilot-shell .text-link { color: #303333; border-color: #c5c7c5; }
+.pilot-shell .text-link:hover { color: #9d5b43; }
+.pilot-shell .section { padding-block: 48px; }
+.pilot-shell .section-heading h2 { font-size: 36px; }
+.pilot-shell .section-heading .eyebrow::before { display: none; }
+.pilot-shell .demo-label, .pilot-shell .pending-label { background: #f4f3f0ee; color: #62594f; border: 1px solid #ded9d1; }
+.pilot-shell .contact-strip { background: #303333; border-radius: 2px; }
+.pilot-shell .contact-strip h2, .pilot-shell .contact-strip .eyebrow, .pilot-shell .contact-strip .text-link { color: #fff; }
+.pilot-shell .contact-strip .button { color: #282a2a; background: white; }
+.pilot-shell .contact-strip .button > span { color: #282a2a; }
+.pilot-shell .contact-dialog { background: white; border-radius: 6px; }
+.pilot-shell .request-context { background: #f2f2ef; }
+.pilot-shell .site-footer { background: #f5f5f3; }
+.pilot-shell .footer-main .logo { font-family: var(--serif); }
+.pilot-shell .info-note { background: #f5f5f3; }
+.pilot-header { position: sticky; top: 0; z-index: 30; background: #fffffffa; border-bottom: 1px solid #e5e5e1; }
+.pilot-header-bar { display: flex; gap: 22px; align-items: center; min-height: 88px; }
+.pilot-wordmark { font-family: var(--serif); font-size: 25px; letter-spacing: .1em; line-height: 1; flex-shrink: 0; }
+.pilot-desktop-nav { display: flex; gap: 20px; align-items: center; margin-left: auto; }
+.pilot-desktop-nav a { font-size: 13px; display: flex; align-items: center; min-height: 44px; border-bottom: 1px solid transparent; }
+.pilot-desktop-nav a.active { border-bottom-color: #303333; }
+.pilot-header-cta { font-size: 13px; min-height: 44px; padding: 10px 14px; gap: 12px; }
+.pilot-phone-icon, .pilot-menu-toggle { flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #303333; }
+.pilot-phone-icon svg { width: 21px; height: 21px; }
+.pilot-menu-toggle { display: flex; flex-direction: column; gap: 6px; padding: 10px; }
+.pilot-menu-toggle > span:not(.visually-hidden) { width: 23px; height: 1px; background: #303333; }
+.pilot-review-notice { background: #f4f4f2; padding-inline: max(24px,calc((100vw - 1280px) / 2)); font-size: 11px; }
+.pilot-review-notice summary { list-style: none; min-height: 30px; display: flex; gap: 12px; align-items: center; justify-content: center; cursor: pointer; }
+.pilot-review-notice summary::-webkit-details-marker { display: none; }
+.pilot-review-notice p { padding-block: 12px; margin: 0; font-size: 13px; }
+.pilot-menu-dialog, .pilot-filter-dialog { color: #282a2a; font-family: 'Walenza Golos', Arial, sans-serif; background: white; border: 0; padding: 0; max-height: 100dvh; }
+.pilot-menu-dialog::backdrop, .pilot-filter-dialog::backdrop { background: #22262980; backdrop-filter: blur(3px); }
+.pilot-menu-dialog { position: fixed; inset: 0 0 0 auto; margin: 0; height: 100dvh; width: min(480px,100%); max-width: 100%; }
+.pilot-menu-body { padding: 28px; }
+.pilot-menu-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.pilot-menu-heading h2 { font-family: 'Walenza Prata', Georgia, serif; font-size: 28px; margin: 0; }
+.pilot-close { min-width: 44px; min-height: 44px; font-size: 28px; line-height: 1; border: 1px solid #dedfdd; border-radius: 50%; }
+.pilot-menu-body > .muted { font-size: 13px; margin: 12px 0 24px; }
+.pilot-menu-body nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+.pilot-menu-body nav a { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-block: 14px; border-bottom: 1px solid #dedfdd; font-size: 15px; min-height: 52px; }
+.pilot-menu-contacts { margin-block: 28px; }
+.pilot-menu-contacts > a { display: block; width: fit-content; font-size: 18px; padding-block: 8px; }
+.pilot-menu-contacts p { font-size: 14px; margin: 12px 0; }
+.pilot-menu-body > .button { display: flex; width: 100%; margin-bottom: 16px; }
+.pilot-shell .home-showcase { padding-block: 40px; gap: 48px; grid-template-columns: minmax(0,.85fr) minmax(0,1.3fr); }
+.pilot-shell .showcase-intro h1 { font-size: clamp(40px,3.5vw,54px); line-height: 1.2; }
+.pilot-shell .showcase-intro > p:not(.eyebrow) { font-size: 16px; }
+.pilot-shell .showcase-intro .showcase-signature { font-size: 12px; }
+.pilot-shell .showcase-gallery { display: grid; grid-template-columns: 1fr auto; gap: 12px 20px; }
+.pilot-shell .showcase-frames { height: auto; aspect-ratio: 3 / 2; grid-column: 1 / -1; background: #f5f5f3; }
+.pilot-shell .showcase-slide { display: block; height: 100%; }
+.pilot-shell .showcase-slide[hidden] { display: none; }
+.pilot-shell .showcase-slide img { border-radius: 0; object-fit: contain; }
+.pilot-shell .showcase-detail-image { display: none; }
+.pilot-shell .showcase-frames[data-detail='true'] .showcase-main-image { display: none; }
+.pilot-shell .showcase-frames[data-detail='true'] .showcase-detail-image { display: block; }
+.pilot-shell .showcase-caption { grid-column: 1 / -1; margin: 0; gap: 12px; align-items: center; }
+.pilot-shell .showcase-caption p { font-family: inherit; font-size: 15px; }
+.pilot-shell .showcase-caption .text-link { font-size: 13px; }
+.pilot-gallery-tools { display: flex; align-items: center; gap: 20px; min-width: 0; }
+.pilot-image-mode { display: flex; gap: 4px; border-bottom: 1px solid #dcded9; }
+.pilot-image-mode button { font-size: 12px; min-height: 44px; padding: 8px 12px; border-bottom: 2px solid transparent; }
+.pilot-image-mode button[aria-pressed='true'] { border-color: #303333; font-weight: 500; }
+.pilot-slide-number { color: #767a77; font-size: 12px; white-space: nowrap; }
+.pilot-shell .showcase-controls { margin: 0; gap: 0; }
+.pilot-shell .showcase-controls > button { width: 44px; height: 44px; border-color: #dddeda; }
+.pilot-shell .showcase-dots button { width: 44px; min-width: 44px; }
+.pilot-shell .showcase-dots button[aria-pressed='true'] span { background: #303333; }
+.pilot-shell .directions { gap: 24px; }
+.pilot-shell .direction-card { border-radius: 0; }
+.pilot-shell .direction-card img { height: 420px; }
+.pilot-shell .direction-card > div { border: 0; background: #fffffff2; border-radius: 0; }
+.pilot-shell .direction-card h3 { font-family: var(--serif); font-size: 28px; }
+.pilot-shell .additional-directions { background: none; border-block: 1px solid var(--border); padding: 20px 0; }
+.pilot-shell .material-home-image img { height: 360px; border-radius: 0; }
+.pilot-shell .material-home-links a { background: none; border: 0; border-bottom: 1px solid var(--border); padding: 12px 0; border-radius: 0; }
+.pilot-shell .home-real-projects { grid-template-columns: 1.2fr 1fr; gap: 48px; }
+.pilot-shell .project-card { border: 0; background: transparent; border-radius: 0; }
+.pilot-shell .project-card-copy { padding: 20px 0; }
+.pilot-shell .project-card-copy h3 { font-family: var(--serif); font-size: 30px; }
+.pilot-shell .project-card-action { background: #f2f2ef; border-color: #e0e0dc; }
+.pilot-shell .image-arrow { background: #303333; }
+.pilot-shell .home-project-story h3 { font-family: var(--serif); font-size: 30px; }
+.pilot-shell .home-project-story p { font-size: 15px; }
+.pilot-shell .real-review { border: 0; background: #f5f5f3; border-radius: 0; padding: 24px; }
+.pilot-shell .real-review blockquote { font-family: inherit; font-size: 20px; line-height: 1.55; }
+.pilot-team-strip { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 700px; margin-block: 28px; }
+.pilot-team-strip figure { display: flex; gap: 16px; align-items: center; margin: 0; }
+.pilot-team-strip img { width: 76px; height: 96px; object-fit: cover; flex-shrink: 0; }
+.pilot-team-strip figcaption { font-size: 15px; line-height: 1.5; }
+.pilot-team-strip figcaption span { display: block; color: var(--muted); font-size: 12px; margin-top: 8px; }
+.pilot-shell .home-benefits { display: block; margin-block: 24px; }
+.pilot-shell .home-benefits details { border-top: 1px solid var(--border); padding: 0; }
+.pilot-shell .home-benefits summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 56px; padding-block: 12px; }
+.pilot-shell .home-benefits summary h3 { font-size: 17px; margin: 0; }
+.pilot-shell .home-benefits details p { font-size: 15px; max-width: 70ch; margin-bottom: 20px; }
+.pilot-home-expand, .pilot-catalog-story, .pilot-reference-photo { border-block: 1px solid var(--border); }
+.pilot-home-expand > summary, .pilot-catalog-story > summary, .pilot-reference-photo > summary { cursor: pointer; min-height: 56px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 16px; list-style: none; font-size: 16px; }
+.pilot-shell summary::-webkit-details-marker { display: none; }
+.pilot-shell .buyer-links { margin-bottom: 24px; }
+.pilot-shell .buyer-links > a { background: #f6f6f3; border: 0; border-radius: 0; }
+.pilot-shell .buyer-links h3 { font-size: 18px; }
+.pilot-shell .offer-links { padding-block: 20px; }
+.pilot-shell .offer-links a { background: #f4f4f0; }
+.pilot-shell .order-preview li { background: #f3f3f0; }
+.pilot-shell .order-preview h3 { font-size: 19px; }
+.pilot-catalog-heading { max-width: 800px; margin-bottom: 28px; }
+.pilot-catalog-heading h1 { font-size: 46px; margin-bottom: 20px; max-width: 21ch; }
+.pilot-catalog-heading > p:not(.eyebrow) { font-size: 16px; max-width: 60ch; color: var(--muted); }
+.pilot-catalog-heading > span { display: block; font-size: 12px; color: #777b76; }
+.pilot-catalog-toolbar { display: none; }
+.pilot-shell .collection-picker { background: #f5f5f3; border: 0; border-radius: 0; }
+.pilot-shell .collection-buttons button { border: 0; border-radius: 0; background: transparent; font-size: 14px; }
+.pilot-shell .collection-buttons button[aria-pressed='true'] { background: #303333; color: white; }
+.pilot-shell .collection-buttons span { background: #e4e5e1; }
+.pilot-shell .collection-buttons button[aria-pressed='true'] span { background: #ffffff20; }
+.pilot-shell .catalog-filters { background: none; border: 0; padding: 0; }
+.pilot-shell select { border-radius: 0; background: white; border-color: #c9ccc6; font-size: 14px; }
+.pilot-shell .filter-reset { border-radius: 0; font-size: 13px; }
+.pilot-shell .catalog-results .model-grid { gap: 28px 24px; }
+.pilot-shell .pilot-model-card { border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+.pilot-shell .pilot-model-card .card-image img { aspect-ratio: 4 / 5; object-fit: contain; background: #f2f2ef; }
+.pilot-shell .pilot-model-card .card-caption { display: block; padding: 16px 0 0; }
+.pilot-shell .pilot-model-card h3 { font-family: var(--serif); font-size: 28px; margin: 0 0 6px; }
+.pilot-shell .pilot-model-card .small-index { border: 0; padding: 0; font-size: 12px; }
+.pilot-model-description summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-size: 13px; border-bottom: 1px solid #dedfdb; gap: 16px; }
+.pilot-model-description p { font-size: 14px; padding-top: 12px; }
+.pilot-model-description .text-link { font-size: 13px; }
+.pilot-active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.pilot-active-filters button { display: flex; align-items: center; gap: 12px; background: #f2f2ee; border: 1px solid #e4e4df; padding: 8px 12px; min-height: 44px; font-size: 12px; }
+.pilot-catalog-story { margin-top: 40px; }
+.pilot-catalog-story figure { max-width: 600px; margin: 20px 0; }
+.pilot-catalog-story figure img { max-height: 400px; object-fit: contain; background: #f3f3f0; }
+.pilot-catalog-story figcaption { font-size: 12px; color: var(--muted); padding-top: 8px; }
+.pilot-filter-dialog { width: min(540px,calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; border-radius: 6px; }
+.pilot-filter-body { padding: 24px; }
+.pilot-filter-body > .muted { font-size: 13px; }
+.pilot-filter-body > label { display: grid; gap: 8px; margin-block: 20px; font-size: 14px; }
+.pilot-filter-body select { width: 100%; }
+.pilot-filter-actions { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 24px; }
+.pilot-filter-actions .text-link { justify-self: start; font-size: 13px; }
+.pilot-filter-actions .button { width: 100%; justify-content: space-between; }
+.pilot-guide-heading { max-width: 780px; margin-bottom: 28px; }
+.pilot-guide-heading h1 { font-size: 44px; max-width: 22ch; margin-bottom: 20px; }
+.pilot-guide-heading > p:not(.eyebrow) { font-size: 16px; color: var(--muted); max-width: 65ch; }
+.pilot-topic-tabs { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); background: white; border-block: 1px solid #dcded9; padding-block: 8px; gap: 4px; margin-bottom: 32px; position: sticky; top: 88px; z-index: 15; }
+.pilot-topic-tabs button { min-height: 48px; padding: 10px; border-bottom: 2px solid transparent; font-size: 14px; }
+.pilot-topic-tabs button[aria-selected='true'] { border-bottom-color: #303333; background: #f4f4f1; font-weight: 500; }
+.pilot-guide-layout { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 64px; }
+.pilot-topic-panel { scroll-margin-top: 190px; }
+.pilot-topic-panel[hidden] { display: none; }
+.pilot-topic-panel:focus { outline: none; }
+.pilot-topic-panel:focus-visible .pilot-panel-title h2 { outline: 2px solid #a5a9a1; outline-offset: 4px; }
+.pilot-panel-title .eyebrow { font-size: 10px; }
+.pilot-panel-title h2 { font-size: 32px; margin-block: 12px; }
+.pilot-panel-title p, .pilot-topic-panel > p { font-size: 15px; line-height: 1.7; }
+.pilot-panel-title p { color: var(--muted); }
+.pilot-order-list { list-style: none; padding: 0; margin: 24px 0; }
+.pilot-order-list li { margin: 0; }
+.pilot-order-list details { border-top: 1px solid #dedfda; }
+.pilot-order-list li:last-child { border-bottom: 1px solid #dedfda; }
+.pilot-order-list summary { display: flex; gap: 16px; align-items: center; min-height: 62px; list-style: none; cursor: pointer; padding-block: 12px; }
+.pilot-step-index { color: #8d6555; font-size: 12px; flex-shrink: 0; }
+.pilot-order-list summary > .pilot-step-index { transform: none; }
+.pilot-order-list h3 { font-family: inherit; font-size: 17px; line-height: 1.4; margin: 0; }
+.pilot-step-plus { margin-left: auto; flex-shrink: 0; font-size: 20px; }
+.pilot-order-list details[open] .pilot-step-plus { transform: rotate(45deg); }
+.pilot-order-list details p { font-size: 15px; margin: 0 0 20px; padding-left: 34px; }
+.pilot-guide-aside .approval-note { font-size: 13px; border-left-color: #a4a79c; }
+.pilot-guide-aside .buyer-visual-note { display: block; background: #f5f5f2; margin-bottom: 0; }
+.pilot-guide-aside .buyer-visual-note > img { height: 210px; }
+.pilot-guide-aside .buyer-visual-note > div { padding: 24px; }
+.pilot-guide-aside .buyer-visual-note h2 { font-size: 26px; }
+.pilot-guide-aside .buyer-key-facts { gap: 20px; }
+.pilot-guide-aside .buyer-key-facts strong { font-family: inherit; font-size: 26px; font-weight: 400; }
+.pilot-guide-aside .buyer-key-facts span { font-size: 12px; }
+.pilot-shell .pilot-topic-panel .buyer-conditions { list-style: none; padding: 0; }
+.pilot-topic-panel .buyer-conditions li { padding: 16px 0; border-bottom: 1px solid #dedfda; font-size: 15px; }
+.pilot-topic-panel .warranty-facts { border: 0; background: #f3f3ef; padding: 24px; }
+.pilot-topic-panel .warranty-facts strong { font-family: inherit; font-size: 28px; }
+.pilot-customers .editorial-help { background: #f3f3ef; }
+.pilot-customers .faq summary { font-size: 16px; }
+.pilot-customers .faq details[open] { background: #f6f6f2; }
+.pilot-reference-photo { margin-top: 32px; }
+.pilot-reference-photo figure { margin: 20px 0; }
+.pilot-reference-photo img { max-height: 420px; object-fit: contain; background: #f5f5f2; }
+.pilot-reference-photo figcaption { padding-top: 8px; font-size: 12px; }
+@media (max-width: 1199px) { .pilot-desktop-nav { display: none; } .pilot-header-cta { margin-left: auto; } .pilot-shell .showcase-controls { grid-column: 1 / -1; justify-content: flex-end; } .pilot-guide-layout { gap: 32px; } }
+@media (max-width: 900px) { .pilot-guide-layout { grid-template-columns: 1fr; } .pilot-guide-aside { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } .pilot-guide-aside .buyer-visual-note > img { height: 180px; } }
+@media (max-width: 760px) {
+ .pilot-header-bar { min-height: 68px; gap: 8px; }
+ .pilot-wordmark { font-size: 22px; margin-right: auto; }
+ .pilot-header-cta { display: none; }
+ .pilot-review-notice summary { min-height: 30px; font-size: 10px; }
+ .pilot-shell .page-content { padding-top: 28px; }
+ .pilot-shell .section { padding-block: 32px; }
+ .pilot-shell .section-heading { gap: 12px; margin-bottom: 20px; }
+ .pilot-shell .section-heading h2 { font-size: 28px; line-height: 1.35; max-width: none; }
+ .pilot-shell .section-heading > .text-link { font-size: 13px; }
+ .pilot-shell .home-showcase { display: grid; grid-template-columns: 1fr; gap: 16px; padding-block: 24px 32px; }
+ .pilot-shell .showcase-intro { display: contents; }
+ .pilot-shell .showcase-intro > .eyebrow { order: 0; margin: 0; font-size: 10px; }
+ .pilot-shell .showcase-intro h1 { order: 1; font-size: 34px; line-height: 1.3; margin: 0; max-width: none; }
+ .pilot-shell .showcase-intro > p:not(.eyebrow):not(.showcase-signature) { order: 2; margin: 0; font-size: 14px; }
+ .pilot-shell .showcase-intro > .button { order: 3; margin: 0; justify-self: start; font-size: 14px; min-height: 48px; }
+ .pilot-shell .showcase-gallery { order: 4; gap: 8px 12px; }
+ .pilot-shell .showcase-intro .showcase-signature { order: 5; margin: 0; font-size: 11px; }
+ .pilot-shell .showcase-frames { height: auto; aspect-ratio: 3 / 2; }
+ .pilot-shell .showcase-caption { display: flex; flex-direction: column; align-items: start; gap: 0; }
+ .pilot-shell .showcase-caption p { font-size: 14px; }
+ .pilot-shell .showcase-caption .text-link { font-size: 12px; min-height: 40px; }
+ .pilot-gallery-tools { grid-column: 1 / -1; justify-content: space-between; }
+ .pilot-shell .showcase-controls { grid-column: 1 / -1; justify-content: space-between; }
+ .pilot-shell .showcase-dots button { width: 44px; }
+ .pilot-shell .direction-card img { height: 330px; }
+ .pilot-shell .direction-card > div { padding: 18px; }
+ .pilot-shell .direction-card h3 { font-size: 24px; }
+ .pilot-shell .additional-directions { gap: 12px; }
+ .pilot-shell .home-real-projects { grid-template-columns: 1fr; gap: 16px; }
+ .pilot-shell .home-project-story { padding-left: 16px; border-left: 1px solid #dcded7; }
+ .pilot-shell .home-project-story h3 { font-size: 25px; }
+ .pilot-shell .home-reviews { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding-bottom: 12px; }
+ .pilot-shell .home-reviews > article { flex: 0 0 86%; scroll-snap-align: start; }
+ .pilot-shell .real-review blockquote { font-size: 18px; }
+ .pilot-shell .material-home-image img { height: 260px; }
+ .pilot-shell .material-home h2 { font-size: 28px; }
+ .pilot-shell .material-home-links { gap: 8px 20px; }
+ .pilot-shell .material-home-links a { font-size: 13px; }
+ .pilot-team-strip { gap: 16px; }
+ .pilot-team-strip figure { display: block; }
+ .pilot-team-strip img { width: 100%; height: auto; aspect-ratio: 4 / 5; margin-bottom: 12px; }
+ .pilot-team-strip figcaption { font-size: 13px; }
+ .pilot-team-strip figcaption span { font-size: 11px; margin-top: 4px; }
+ .pilot-shell .salon-process .section-description { font-size: 14px; }
+ .pilot-shell .home-benefits summary h3 { font-size: 15px; }
+ .pilot-shell .buyer-links { grid-template-columns: 1fr; }
+ .pilot-shell .buyer-links > a { padding: 16px; }
+ .pilot-shell .buyer-links p { font-size: 13px; }
+ .pilot-shell .offer-links { grid-template-columns: 1fr; }
+ .pilot-shell .offer-links h3 { font-size: 22px; }
+ .pilot-shell .contact-strip { padding: 24px; }
+ .pilot-shell .contact-strip h2 { font-size: 29px; }
+ .pilot-catalog-heading { margin-bottom: 20px; }
+ .pilot-catalog-heading h1 { font-size: 30px; line-height: 1.35; margin-bottom: 12px; }
+ .pilot-catalog-heading .eyebrow { margin-bottom: 12px; }
+ .pilot-catalog-heading > p:not(.eyebrow) { font-size: 13px; margin-bottom: 12px; }
+ .pilot-catalog-heading > span { font-size: 10px; }
+ .pilot-catalog-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 10px; border-block: 1px solid #dedfdb; margin-bottom: 12px; font-size: 12px; }
+ .pilot-filter-trigger { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; }
+ .pilot-filter-trigger svg { width: 20px; height: 20px; }
+ .pilot-filter-trigger > span { background: #303333; color: white; padding: 2px 7px; font-size: 11px; }
+ .pilot-catalog .collection-picker, .pilot-catalog .pilot-desktop-filters { display: none; }
+ .pilot-catalog .catalog-layout { display: block; }
+ .pilot-shell .catalog-status { font-size: 10px; margin-bottom: 16px; }
+ .pilot-shell .catalog-results .model-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 14px; }
+ .pilot-shell .pilot-model-card .card-caption { padding-top: 12px; }
+ .pilot-shell .pilot-model-card h3 { font-size: 19px; line-height: 1.4; }
+ .pilot-shell .pilot-model-card .model-title-note { font-size: 10px; }
+ .pilot-shell .pilot-model-card .small-index { font-size: 10px; }
+ .pilot-shell .pilot-model-card .image-arrow { width: 32px; height: 32px; right: 8px; bottom: 8px; }
+ .pilot-shell .pilot-model-card .image-arrow > span { font-size: 15px; }
+ .pilot-model-description summary { font-size: 12px; }
+ .pilot-model-description p, .pilot-model-description .text-link { font-size: 12px; }
+ .pilot-active-filters { margin-top: 8px; gap: 6px; }
+ .pilot-active-filters button { font-size: 11px; padding: 6px 10px; }
+ .pilot-filter-dialog { position: fixed; inset: auto 0 0; margin: 0; width: 100%; max-width: 100%; max-height: 90dvh; border-radius: 14px 14px 0 0; }
+ .pilot-filter-body { padding: 20px 24px max(20px,env(safe-area-inset-bottom)); }
+ .pilot-filter-body label { margin-block: 16px; }
+ .pilot-filter-actions { position: sticky; bottom: -20px; background: white; padding-block: 12px; }
+ .pilot-guide-heading { margin-bottom: 20px; }
+ .pilot-guide-heading h1 { font-size: 30px; line-height: 1.35; margin-bottom: 12px; }
+ .pilot-guide-heading .eyebrow { margin-bottom: 12px; }
+ .pilot-guide-heading > p:not(.eyebrow) { font-size: 13px; margin-bottom: 0; }
+ .pilot-topic-tabs { top: 68px; grid-template-columns: repeat(3,minmax(0,1fr)); margin-bottom: 24px; gap: 2px; }
+ .pilot-topic-tabs button { font-size: 13px; min-height: 44px; }
+ .pilot-topic-panel { scroll-margin-top: 180px; }
+ .pilot-panel-title h2 { font-size: 27px; }
+ .pilot-panel-title p, .pilot-topic-panel > p { font-size: 14px; }
+ .pilot-panel-title .eyebrow { display: none; }
+ .pilot-order-list summary { min-height: 58px; gap: 12px; }
+ .pilot-order-list h3 { font-size: 15px; }
+ .pilot-order-list details p { padding-left: 28px; font-size: 14px; }
+ .pilot-guide-aside { display: block; }
+ .pilot-guide-aside .buyer-visual-note { display: grid; grid-template-columns: 100px minmax(0,1fr); }
+ .pilot-guide-aside .buyer-visual-note > img { height: 100%; min-height: 230px; }
+ .pilot-guide-aside .buyer-visual-note > div { padding: 18px; }
+ .pilot-guide-aside .buyer-visual-note h2 { font-size: 22px; }
+ .pilot-guide-aside .buyer-key-facts { grid-template-columns: 1fr; gap: 8px; }
+ .pilot-guide-aside .buyer-key-facts p { margin-bottom: 0; }
+ .pilot-guide-aside .buyer-key-facts strong { font-size: 24px; margin-bottom: 2px; }
+ .pilot-guide-aside .buyer-visual-note .eyebrow { font-size: 9px; }
+ .pilot-guide-aside .buyer-visual-note .muted { font-size: 11px; margin-top: 14px; }
+ .pilot-customers .editorial-help { padding: 24px; }
+ .pilot-customers .editorial-help h2 { font-size: 28px; }
+ .pilot-customers .faq summary { font-size: 14px; padding-inline: 0; }
+ .pilot-topic-panel .warranty-facts { gap: 16px; padding: 16px; }
+ .pilot-topic-panel .warranty-facts strong { font-size: 23px; }
+ .pilot-topic-panel .warranty-facts span { font-size: 12px; }
+}

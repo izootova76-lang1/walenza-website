@@ -39,8 +39,13 @@ async function swipe(frame, dx, dy) {
     assert.equal(target, targets[index] === 'dining' ? '#/kitchens' : '#/kitchens/models/' + targets[index]);
     const current = await frame.boundingBox();
     assert.equal(current.width, initial.width); assert.equal(current.height, initial.height);
-    const boxes = await page.locator('.showcase-slide:visible img').evaluateAll(images => images.map(image => image.getBoundingClientRect().toJSON()));
-    assert.ok(boxes[1].x >= boxes[0].right + 4);
+    assert.equal(await page.locator('.showcase-slide:visible .showcase-main-image').isVisible(), true);
+    assert.equal(await page.locator('.showcase-slide:visible .showcase-detail-image').isVisible(), false);
+    await page.locator('.pilot-image-mode button').nth(1).click();
+    assert.equal(await page.locator('.showcase-slide:visible .showcase-detail-image').isVisible(), true);
+    assert.equal(await page.locator('.showcase-slide:visible .showcase-main-image').isVisible(), false);
+    assert.equal((await frame.boundingBox()).height, initial.height);
+    await page.locator('.pilot-image-mode button').first().click();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
    }
    await page.getByRole('button', { name: 'Следующая композиция', exact: true }).click();

@@ -1,0 +1,7 @@
+.catalog-grid-item{min-width:0;align-self:start}
+.catalog-grid-cta{min-width:0;align-self:start}
+.journal-shell .catalog-composition .catalog-cta{margin:0}
+.journal-shell .catalog-grid-cta.is-inset .catalog-cta{flex-direction:column;align-items:flex-start;gap:22px;padding:26px 24px}
+.journal-shell .catalog-grid-cta.is-inset h2{font-size:24px}
+.journal-shell .catalog-grid-cta.is-inset .button{max-width:100%;white-space:normal}
+@media(max-width:540px){.catalog-grid-cta{grid-column:1 / -1!important}.journal-shell .catalog-grid-cta .catalog-cta{padding:22px 20px}.journal-shell .catalog-grid-cta.is-inset h2{font-size:22px}}

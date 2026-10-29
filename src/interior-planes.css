@@ -1,0 +1,31 @@
+/* Opt-in experiment: ?design=planes. Only home, trial customers and about. */
+.journal-shell.interior-plane-study{background:#edf0f2}
+.interior-plane-study #main{position:relative;isolation:isolate;overflow-x:clip}
+.interior-plane-study #main::before{content:'';position:absolute;inset:0;z-index:-2;pointer-events:none}
+
+/* Home: a tall side wall, with a broad horizontal plane under materials. */
+.interior-plane-study[data-plane-page=home] #main::before{background:linear-gradient(90deg,#f0f2f4 0 calc(50% + 140px),#cdd4da calc(50% + 140px) calc(50% + 141px),#e2e7ec calc(50% + 141px) 100%)}
+.interior-plane-study[data-plane-page=home] .material-home{position:relative;isolation:isolate}
+.interior-plane-study[data-plane-page=home] .material-home::before{content:'';position:absolute;z-index:-1;top:10px;bottom:10px;width:100vw;left:50%;transform:translateX(-50%);background:#dfe5ea;border-top:1px solid #cbd2d8;border-bottom:1px solid #d4dae0;box-shadow:inset 0 3px 5px #26313b05;pointer-events:none}
+
+/* Customers: a shallow wall plane behind the heading, a separate FAQ plane. */
+.interior-plane-study[data-plane-page=customers] #main::before{background:linear-gradient(90deg,#edf0f2 0 72%,#d3dae0 72% calc(72% + 1px),#e4e9ed calc(72% + 1px) 100%)}
+.interior-plane-study[data-plane-page=customers] .pilot-guide-heading{position:relative;isolation:isolate}
+.interior-plane-study[data-plane-page=customers] .pilot-guide-heading::before{content:'';position:absolute;z-index:-1;top:-48px;bottom:-30px;width:100vw;left:calc((min(1280px,100vw - 96px) - 100vw)/2);background:#dfe5ea;border-bottom:1px solid #c9d1d8;box-shadow:0 2px 5px #26313b05;pointer-events:none}
+.interior-plane-study[data-plane-page=customers] .pilot-faq-section{position:relative;isolation:isolate}
+.interior-plane-study[data-plane-page=customers] .pilot-faq-section::before{content:'';position:absolute;z-index:-1;inset:12px calc((min(1280px,100vw - 96px) - 100vw)/2);background:#e1e6eb;border-block:1px solid #cfd7dd;box-shadow:inset 0 2px 4px #26313b04;pointer-events:none}
+
+/* About: the denser wall is on the left; a lighter plane frames the team. */
+.interior-plane-study[data-plane-page=about] #main::before{background:linear-gradient(90deg,#e1e7ec 0 63%,#cbd3da 63% calc(63% + 1px),#f0f2f4 calc(63% + 1px) 100%)}
+.interior-plane-study[data-plane-page=about] .team-section{position:relative;isolation:isolate}
+.interior-plane-study[data-plane-page=about] .team-section::before{content:'';position:absolute;z-index:-1;inset:8px calc((min(1280px,100vw - 96px) - 100vw)/2);background:#f3f5f6;border-block:1px solid #d2d9df;box-shadow:0 2px 5px #26313b04;pointer-events:none}
+
+/* Mobile: broad horizontal fields, without vertical seams through the copy. */
+@media(max-width:760px){
+ .interior-plane-study[data-plane-page=home] #main::before{background:#edf0f2}
+ .interior-plane-study[data-plane-page=customers] #main::before{background:#edf0f2}
+ .interior-plane-study[data-plane-page=about] #main::before{background:#e6ebef}
+ .interior-plane-study[data-plane-page=home] .material-home::before{top:12px;bottom:12px}
+ .interior-plane-study[data-plane-page=customers] .pilot-guide-heading::before{top:-48px;bottom:-20px;left:-18px}
+ .interior-plane-study[data-plane-page=customers] .pilot-faq-section::before,.interior-plane-study[data-plane-page=about] .team-section::before{left:-18px;right:-18px}
+}

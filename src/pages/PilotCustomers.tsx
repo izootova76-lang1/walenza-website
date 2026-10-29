@@ -1,0 +1,40 @@
+import PocketFAQ from '../components/PocketFAQ';
+import CustomerPocket from '../components/CustomerPocket';
+import { installationRates } from '../data/services';
+import { careGuides } from '../data/care';
+import { useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { assetUrl } from '../assetUrl';
+import { buyerTopics, contentRepository, type OpenContact } from '../data/content';
+import { buyerContent } from '../data/salon';
+import { Arrow, FAQ, SectionHeading } from '../components/UI';
+
+const labels: Record<string, string> = { order: 'Заказ', payment: 'Оплата', delivery: 'Доставка', 'warranty-care': 'Гарантия', care: 'Уход' };
+export default function PilotCustomers({ onContact, pocket = false }: { onContact: OpenContact; pocket?: boolean }) {
+ const { hash } = useLocation(); const navigate = useNavigate();
+ const active = buyerTopics.some(item => item.id === hash.slice(1)) ? hash.slice(1) : 'order';
+ const tabs = useRef(new Map<string, HTMLButtonElement>());
+ const tabActivation = useRef(false);
+ const activate = (id: string) => { if (active === id) return; tabActivation.current = true; navigate(`/customers#${id}`); };
+ useEffect(() => { if (!tabActivation.current) return; tabActivation.current = false; const frame = requestAnimationFrame(() => tabs.current.get(active)?.focus({ preventScroll: true })); return () => cancelAnimationFrame(frame); }, [active]);
+ return <div className={`container page-content customers-page pilot-customers${pocket ? ' customer-pocket-page' : ''}`}>
+  <header className="pilot-guide-heading">{!pocket && <p className="eyebrow">Покупателям</p>}<h1>{pocket ? 'Покупателям' : 'Всё начинается с вашей идеи'}</h1><p>{pocket && 'Всё начинается с вашей идеи. '}Понятный путь от первого разговора до готовой мебели. Здесь — этапы заказа, условия и забота о деталях.</p></header>
+  {pocket ? <><CustomerPocket onContact={onContact} /></> : <><nav className="pilot-topic-tabs" role="tablist" aria-label="Темы для покупателей">{buyerTopics.map((item, index) => <button key={item.id} role="tab" id={`pilot-tab-${item.id}`} aria-selected={active === item.id} aria-controls={item.id} tabIndex={active === item.id ? 0 : -1} ref={element => { if (element) tabs.current.set(item.id, element); else tabs.current.delete(item.id); }} onClick={() => activate(item.id)} onKeyDown={event => { let next = index; if (event.key === 'ArrowRight') next = (index + 1) % buyerTopics.length; else if (event.key === 'ArrowLeft') next = (index + buyerTopics.length - 1) % buyerTopics.length; else if (event.key === 'Home') next = 0; else if (event.key === 'End') next = buyerTopics.length - 1; else return; event.preventDefault(); tabs.current.get(buyerTopics[next].id)?.focus(); }}>{labels[item.id]}</button>)}</nav>
+  <div className="pilot-guide-layout"><div className="buyer-topics">{buyerTopics.map(item => <section key={item.id} id={item.id} className="pilot-topic-panel" role="tabpanel" aria-labelledby={`pilot-tab-${item.id}`} tabIndex={0} hidden={active !== item.id}>
+   <div className="pilot-panel-title"><span className="eyebrow">Условия и порядок</span><h2>{item.title}</h2><p>{item.summary}</p></div><p>{item.text}</p>
+   {item.id === 'order' ? <><ol className="pilot-order-list">{contentRepository.steps.map((step, index) => <li key={step.title}><details open={index === 0}><summary><h3>{step.title}</h3><span className="pilot-step-plus" aria-hidden="true">+</span></summary><p>{step.text}</p></details></li>)}</ol><button className="button" onClick={() => onContact({ kind: 'request', context: 'Обсуждение проекта и порядка заказа' })}>Обсудить проект <Arrow /></button></> : <>
+    {item.id === 'warranty-care' && <div className="warranty-facts"><p><strong>24 месяца</strong><span>Гарантия на мебель</span></p></div>}
+    {buyerContent[item.id]?.points && <ul className="buyer-conditions">{buyerContent[item.id].points!.map(text => <li key={text}>{text}</li>)}</ul>}
+    {buyerContent[item.id]?.paragraphs?.map(text => <p key={text}>{text}</p>)}
+    {item.id === 'delivery' && <div className="journal-service-details"><details><summary>Замер и подъём <span aria-hidden="true">+</span></summary><dl className="journal-rates"><div><dt>Замер в Москве и других районах Московской области</dt><dd>2 000 ₽</dd></div><div><dt>Замер в Раменском и Раменском районе</dt><dd>1 000 ₽</dd></div><div><dt>Ручной подъём при отсутствии подходящего грузового лифта</dt><dd>1 000 ₽ за этаж</dd></div><div><dt>Если часть деталей не помещается в лифт</dt><dd>300 ₽ за этаж</dd></div><div><dt>Подъём с подземного паркинга до лифта</dt><dd>2 000 ₽; при двух этажах паркинга — 2 500 ₽</dd></div><div><dt>Занос и подъём бытовой техники</dt><dd>200 ₽ за единицу; крупногабаритной — 500 ₽ за единицу. Без подходящего лифта — за каждый этаж.</dd></div></dl><p>Базовая доставка и занос за 6 000 ₽ для Косино, Выхино и Люберец не дублируются отдельным тарифом за занос. Дополнительный ручной подъём и особые условия согласовываются заранее.</p></details><details><summary>Сборка и дополнительные работы <span aria-hidden="true">+</span></summary><p>Сборка мебели — 10% стоимости мебели, не менее 5 000 ₽. Состав работ и итоговая стоимость согласовываются для вашего заказа.</p><dl className="journal-rates">{installationRates.map(rate => <div key={rate.title}><dt>{rate.title}</dt><dd>{rate.price}</dd></div>)}</dl><p>Расходные материалы для монтажа и подключения приобретаются отдельно. Газовое оборудование подключает профильный специалист; сборщики салона газовые приборы не подключают. Работы, которых нет в перечне, согласовываются отдельно.</p></details><details><summary>Подготовка к установке <span aria-hidden="true">+</span></summary><p>Освободите помещение от посторонних предметов. До установки мебели подготовьте электрические, сантехнические и газовые коммуникации с профильными специалистами по согласованному проекту.</p><p>Заранее сообщите монтажникам о скрытой проводке, трубах и особенностях стен. Согласуйте доступ в помещение и присутствие покупателя или представителя во время работ. Точки подключения техники должны быть готовы к установке.</p></details></div>}
+    {item.id === 'care' && <div className="journal-care-guides">{careGuides.map(guide => <details key={guide.title}><summary>{guide.title}<span aria-hidden="true">+</span></summary><p>{guide.text}</p></details>)}</div>}
+   </>}
+  </section>)}</div><BuyerAside /></div>
+  </>}
+  <section className="section pilot-faq-section"><SectionHeading eyebrow="Перед разговором" title="Частые вопросы" />{pocket ? <PocketFAQ /> : <FAQ />}</section>
+  <aside className="editorial-help"><div><p className="eyebrow">Остались вопросы?</p><h2>Начнём с разговора</h2><p>Поможем разобраться с материалами и порядком заказа.</p></div><button className="button" onClick={() => onContact({ kind: 'request', context: 'Вопрос об условиях заказа' })}>Задать вопрос <Arrow /></button></aside>
+  <details className="pilot-reference-photo"><summary>Мебель WALENZA · рассмотреть интерьер <span aria-hidden="true">+</span></summary><figure><img src={assetUrl('/images/kitchens/contour.jpg')} alt="Реальная кухня WALENZA: древесные фасады и светлая рабочая поверхность" loading="lazy" /><figcaption>Мебель WALENZA · фото предоставлено заказчиком</figcaption></figure></details>
+ </div>;
+}
+
+function BuyerAside() { return <aside className="pilot-guide-aside"><p className="approval-note">Детали конкретного заказа, точные сроки и состав услуг фиксируются в договоре.</p><div className="buyer-visual-note"><img src={assetUrl('/images/projects/soft-light-detail.jpg')} alt="Детали рабочей поверхности и фасадов реальной кухни" loading="lazy" /><div><p className="eyebrow">Забота о деталях</p><h2>Продумано для вашей жизни</h2><div className="buyer-key-facts"><p><strong>от 21</strong><span>рабочего дня · изготовление</span></p><p><strong>24 месяца</strong><span>гарантия на мебель</span></p></div><p className="muted">Точные сроки, комплектация и стоимость — в вашем договоре.</p></div></div></aside>; }

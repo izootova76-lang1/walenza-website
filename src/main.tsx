@@ -7,5 +7,15 @@ import './typography.css';
 import './prototype.css';
 import './editorial.css';
 import './design-system.css';
+import './pilot.css';
+import './journal.css';
+import './compact-samples.css';
+import './rif-prototype.css';
+import './customer-pocket.css';
+import './interior-planes.css';
+import './about-compact.css';
+import './wardrobe-categories.css';
+import './review-system.css';
+import './presentation-update.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><HashRouter><App /></HashRouter></React.StrictMode>);

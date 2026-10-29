@@ -8,7 +8,7 @@ const base=process.env.QA_URL||'http://127.0.0.1:4178/walenza-website/';
  const go=async(route)=>{await page.goto(base+'#'+route);await page.locator('h1').waitFor();};
  await go('/projects');assert.equal(await page.locator('.project-card').count(),1);assert.equal(await page.locator('.project-card .demo-label').count(),0);
  assert.ok(await page.locator('.project-card .card-image').evaluate(el=>Math.abs(el.clientHeight-el.querySelector('img').clientHeight)<2),'project card photo fills frame');
- await page.locator('.project-card').click();await page.waitForFunction(()=>document.querySelector('h1')?.textContent==='Мягкий свет');assert.equal(await page.locator('h1').innerText(),'Мягкий свет');assert.equal(await page.locator('.project-detail-image').count(),3);
+ await page.locator('.project-card').click();await page.waitForFunction(()=>document.querySelector('h1')?.textContent==='Мягкий свет');assert.equal(await page.locator('h1').innerText(),'Мягкий свет');assert.equal(await page.locator('.journal-gallery figure').count(),3);
  const video=page.locator('.project-video-section video');assert.equal(await video.getAttribute('preload'),'none');assert.equal(await video.getAttribute('autoplay'),null);assert.notEqual(await video.getAttribute('playsinline'),null);
  await page.locator('.project-video-link').click();await video.scrollIntoViewIfNeeded();
  const metadata=await video.evaluate(async v=>{v.load();await new Promise((ok,no)=>{v.onloadedmetadata=ok;v.onerror=()=>no(new Error(v.error?.message||'video error'));});v.muted=true;await v.play();await new Promise(ok=>{const timer=setInterval(()=>{if(v.currentTime>.2){clearInterval(timer);ok();}},50);});v.pause();return {duration:v.duration,width:v.videoWidth,height:v.videoHeight,time:v.currentTime};});
