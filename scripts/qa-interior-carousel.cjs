@@ -13,7 +13,7 @@ async function swipe(p,dx,dy){await p.locator('.interior-hero').evaluate((el,{dx
 (async()=>{
  const b=await chromium.launch({channel:'msedge',headless:true});
  try{
-  for(const width of [1920,1440,1024,768,390,360,320]){
+  for(const width of [1920,1440,1024,768,767,600,430,390,375,360,320]){
    const p=await b.newPage({viewport:{width,height:1000},hasTouch:width<700,reducedMotion:'reduce'});p.on('pageerror',e=>errors.push(e.message));
    await p.goto(base+'#/');await p.evaluate(()=>document.fonts.ready);
    await p.locator('.interior-hero img').evaluateAll(es=>es.forEach(e=>e.loading='eager'));
@@ -27,12 +27,18 @@ async function swipe(p,dx,dy){await p.locator('.interior-hero').evaluate((el,{dx
     assert.equal(h.height,before.height);assert.equal(c.y-h.y,copy.y-before.y);assert.equal(c.height,copy.height);
     assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'horizontal overflow');
     const styles=await p.locator('.interior-hero h1').evaluate(e=>({color:getComputedStyle(e).color,size:parseFloat(getComputedStyle(e).fontSize),line:parseFloat(getComputedStyle(e).lineHeight),height:e.getBoundingClientRect().height,border:parseFloat(getComputedStyle(e).borderLeftWidth)}));
-    assert.equal(styles.color,'rgb(255, 255, 255)');assert(styles.border>=5);assert(Math.abs(styles.height-styles.line*2)<2,'heading must remain two lines');
-    if(width<=600)assert(styles.size>=30&&styles.size<=36);
+    assert(Math.abs(styles.height-styles.line*2)<2,'heading must remain two lines');
+    if(width<=767){
+     assert.notEqual(styles.color,'rgb(255, 255, 255)');assert.equal(styles.border,4);assert(styles.size>=22&&styles.size<=25);
+     const photoArea=await p.locator('.interior-hero-images').boundingBox();
+     assert(c.y>=photoArea.y+photoArea.height-1,'mobile text must not cover photographs');
+     const cta=await p.locator('.interior-hero-cta').boundingBox();assert(cta.y>=photoArea.y+photoArea.height-1,'mobile CTA must not cover furniture');
+     assert.equal(await p.locator('.interior-hero-shade').isVisible(),false,'no photo shade needed outside text');
+    }else{assert.equal(styles.color,'rgb(255, 255, 255)');assert(styles.border>=5);}
     if(width>=1024)assert(styles.size>=56&&styles.size<=64);
     const image=await p.locator('.interior-hero-slide.is-active img').evaluate(e=>({src:e.currentSrc,fit:getComputedStyle(e).objectFit}));
     assert(image.src.includes(width<=767?'mobile.webp':'large.webp'));
-    if(width<=600)assert.equal(image.fit,'contain');
+    if(width<=767){assert.equal(image.fit,'contain');const bar=await p.locator('.interior-hero-controls').boundingBox();assert(bar.height>=38&&bar.height<=44,'compact mobile controls');}
     if([1440,390].includes(width))await p.locator('.interior-hero').screenshot({path:path.join(out,`${width}-slide-${i+1}.png`)});
    }
    await p.getByRole('button',{name:'Следующий интерьер',exact:true}).click();await p.waitForFunction(()=>document.querySelector('.interior-hero-slide.is-active').dataset.slide==='1');

@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { assetUrl } from '../assetUrl';
 import { interiorSlides as slides } from '../data/interiorCarousel';
+import type { CSSProperties } from 'react';
 import type { OpenContact } from '../data/content';
 import { Arrow } from './UI';
 import '../interior-carousel.css';
 
 const DURATION = 900;
 const INTERVAL = 7000;
+// Reserve only the height required by the tallest source, so controls never jump.
+const MOBILE_FRAME_RATIO = Math.min(...slides.map(slide => slide.width / slide.height));
 
 export default function HomeShowcase({ onContact }: { onContact: OpenContact }) {
  const [active, setActive] = useState(0);
@@ -100,7 +103,7 @@ export default function HomeShowcase({ onContact }: { onContact: OpenContact }) 
   return () => clearTimeout(timer);
  }, [active, autoRunning, select]);
 
- return <section ref={section} className="interior-hero" aria-label="Интерьерные фотографии WALENZA" aria-roledescription="карусель"
+ return <section ref={section} className="interior-hero" style={{'--interior-frame-ratio': MOBILE_FRAME_RATIO} as CSSProperties} aria-label="Интерьерные фотографии WALENZA" aria-roledescription="карусель"
   onMouseEnter={event => { if (event.buttons === 0 && matchMedia('(hover: hover)').matches) setHovered(true); }} onMouseLeave={() => setHovered(false)}
   onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false); }}
   onKeyDown={event => {
